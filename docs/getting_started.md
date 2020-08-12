@@ -10,7 +10,9 @@ We provide some demo tasks under the folder `task`. Here, we introduce how to ex
 
 The given task codes follow the task template provided by PixelSSL. Therefore, they are compatible with all integrated semi-supervised learning algorithms. We hope that these task codes can help users to validate their new semi-supervised algorithms and compare their algorithms with existing works.
 
-In the following context, we refer to the task folder as `task/xxx`, where `xxx` is the unique name of the task. For example, the folder of semantic segmentation is named `task/sseg`. To run an experiment (assuming you are currently at the root path of the project): 
+In the following context, we refer to the task folder as `task/xxx`, where `xxx` is the unique name of the task. For example, the folder of semantic segmentation is named `task/sseg`.   
+Currently supported tasks are [[semantic segmentation](../task/sseg), ].  
+To run an experiment (assuming you are currently at the root path of the project): 
 
 1. Switch to the root path of the task and install task-specific python dependencies:
     ```
