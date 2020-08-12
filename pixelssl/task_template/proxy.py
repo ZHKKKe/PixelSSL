@@ -140,7 +140,7 @@ class TaskProxy:
                         
             logger.log_info(['=' * 78, '\nStart to validate model\n', '=' * 78])
             with torch.no_grad():
-                self.ssl_algorithm.validate(self.val_loader, start_epoch)
+                self.ssl_algorithm.validate(self.val_loader, start_epoch - 1)
             return
 
         for epoch in range(start_epoch, self.args.epochs):
