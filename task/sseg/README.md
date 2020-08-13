@@ -10,7 +10,7 @@ This is the demo code of semantic segmentation used to validate the semi-supervi
 ## Introduction
 Semantic segmentation takes an image as input and predicts a series of category masks, which link each pixel in the input image to a class. In this implementation, the supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with the [ResNet-101](https://arxiv.org/abs/1512.03385) backbone. All experiments are conducted on the [Pascal VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/) dataset, which comprises 20 foreground classes along with 1 background class. The extra annotation set from the [Segmentation Boundaries Dataset (SBD)](http://home.bharathh.info/pubs/codes/SBD/download.html) is combined to expand the dataset. 
 
-The training rules proposed in paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) are applied to set the arguments. For semi-supervised learning, 1/16, 1/8, 1/4, 1/2 samples are randomly extracted as the labeled subset, and the rest of the training set is used as the unlabeled subset. Note that the same data splits are used in all experiments. The main experimental results (mIOU averaged over 3 runs) are as follows:
+The training rules proposed in paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) are applied to set the arguments. All experiments are trained with **4 Nvidia GPUs**. For semi-supervised learning, 1/16, 1/8, 1/4, 1/2 samples are randomly extracted as the labeled subset, and the rest of the training set is used as the unlabeled subset. Note that the same data splits are used in all experiments. The main experimental results (mIOU averaged over 3 runs) are as follows:
 | SSL/Labels | 1/16 labels | 1/8 labels | 1/4 labels | 1/2 labels | full labels | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | SupOnly | 64.55 | [68.38](https://drive.google.com/file/d/1QutIDEmxrz86tocLiW3cQPgPlfeVKoFO/view?usp=sharing) | 70.69 | 73.56| [75.32](https://drive.google.com/file/d/1sw1UspgnUsnJ5bOrTRVacX83B2P0Rng4/view?usp=sharing) |
@@ -57,10 +57,11 @@ Please click the mIOU results in the above table (in the [Introduction](#introdu
 After downloading the pretrained models, please put them into the folder `pretrained`.
 
 ## Script Execution
-In short, after [preparing the dataset](#data-preparation) and [downloading the pretrained models](#pretrained-models), you can run the experiment (take the GGT algorithm as an example) by:
+In short, after [preparing the dataset](#data-preparation) and [downloading the pretrained models](#pretrained-models), you can run validate the pretrained model (take the GGT algorithm as an example) by:
 ```
 pip install -r requirements.txt
 python -m script.deeplabv2_pascalvoc_1-8_sslgct
 ```
 
-Please refer to the [Getting Started](../../docs/getting_started.md) document for more details.
+Please refer to the [Getting Started](../../docs/getting_started.md) document for more details, e.g., how to retrain the model.  
+**NOTE**: If you want to retrain the model, it is recommended to use **4 Nvidia GPUs** to obtain similar performance to the pretrained model.

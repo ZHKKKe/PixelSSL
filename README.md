@@ -22,7 +22,7 @@ This project includes the code of our ECCV 2020 paper [Guided Collaborative Trai
   [GCT](https://arxiv.org/abs/2008.05258)) 
   and one example task (semantic segmentation).
 
-  [[More](docs/update_log.md)]
+  [[More](docs/updates.md)]
 
 
 ## Supported Algorithms and Tasks

@@ -26,10 +26,9 @@ To run an experiment (assuming you are currently at the root path of the project
     ```
     python -m script.[name_of_the_script]
     ```
-    **NOTE**: You can specify the GPUs by adding `CUDA_VISIBLE_DEVICES=gpus-id` before the `python` command.  
     **NOTE**: The naming rule of the scripts and the pretrained models is `[model architecture]_[dataset]_[labels ratio]_[SSL algorithm]`.  
 
-4. If you want to train the model, please comment the following two lines on the script as:
+4. If you want to retrain the model, please comment the following two lines on the script as:
     ```
     # 'resume'  : 'pretrained/[name_of_the_pretrained_model]',
     # 'validation': True,
@@ -38,6 +37,12 @@ To run an experiment (assuming you are currently at the root path of the project
     ```
     python -m script.[name_of_the_script]
     ```
+    You can also specify the used Nvidia GPUs by adding `CUDA_VISIBLE_DEVICES=gpus-id` before the `python` command, e.g., using the first 4 GPUs for training:
+    ```
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m script.[name_of_the_script]
+    ```
+    **NOTE**: Please refer to the file `task/xxx/README.md` to set the optimal number of Nvidia GPUs for different tasks.
+
 
 5. To check the help information for the arguments related to the current script, please run:
     ```

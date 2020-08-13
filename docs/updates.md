@@ -4,7 +4,7 @@
 
 ---
 
-## Update Log
+## Updates
 
 - **[Aug 13 2019] PixelSSL v0.1.0 is Published!**  
   v0.1.0 supports supervised-only learning, three semi-supervised learning algorithms 
