@@ -12,14 +12,14 @@ The purpose of this project is to promote the research and application of semi-s
 
 As a result, the SSL algorithms integrated in PixelSSL are compatible with all task codes inherited from the given template. 
 
-This project includes the code of our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning]() (GCT).
+This project includes the code of our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) (GCT).
 
 **News**:
 - **[Aug 13 2019] PixelSSL v0.1.0 is Published!**  
   v0.1.0 supports supervised-only learning, three semi-supervised learning algorithms 
   ([MT](https://arxiv.org/abs/1703.01780), 
   [AdvSSL](https://arxiv.org/abs/1802.07934), 
-  [GCT]()) 
+  [GCT](https://arxiv.org/abs/2008.05258)) 
   and one example task (semantic segmentation).
 
   [[More](docs/update_log.md)]
@@ -34,7 +34,7 @@ The algorithms and demo tasks supported by PixelSSL are summarized in the follow
 | [MT](https://arxiv.org/abs/1703.01780) | v0.1.0 | Coming Soon |
 | S4L | Coming Soon | Coming Soon | 
 | [AdvSSL](https://arxiv.org/abs/1802.07934) | v0.1.0 | Coming Soon |
-| [GCT]() | v0.1.0 | Coming Soon |
+| [GCT](https://arxiv.org/abs/2008.05258) | v0.1.0 | Coming Soon |
 
 
 ## Installation
@@ -62,7 +62,7 @@ We thank [City University of Hong Kong](https://www.cityu.edu.hk/) and [SenseTim
 
 
 ## Citation
-This project is extended from our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning]() (GCT). If this codebase or our method helps your research, please cite:
+This project is extended from our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) (GCT). If this codebase or our method helps your research, please cite:
 
 ```bibtex
 @InProceedings{ke2020gct,
