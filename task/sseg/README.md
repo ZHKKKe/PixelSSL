@@ -13,10 +13,10 @@ Semantic segmentation takes an image as input and predicts a series of category 
 The training rules proposed in paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) are applied to set the arguments. All experiments are trained with **4 Nvidia GPUs**. For semi-supervised learning, 1/16, 1/8, 1/4, 1/2 samples are randomly extracted as the labeled subset, and the rest of the training set is used as the unlabeled subset. Note that the same data splits are used in all experiments. The main experimental results (mIOU averaged over 3 runs) are as follows:
 | SSL/Labels | 1/16 labels | 1/8 labels | 1/4 labels | 1/2 labels | full labels | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| SupOnly | 64.55 | [68.38](https://drive.google.com/file/d/1QutIDEmxrz86tocLiW3cQPgPlfeVKoFO/view?usp=sharing) | 70.69 | 73.56| [75.32](https://drive.google.com/file/d/1sw1UspgnUsnJ5bOrTRVacX83B2P0Rng4/view?usp=sharing) |
-| [MT](https://arxiv.org/abs/1703.01780) | 66.08 | [69.81](https://drive.google.com/file/d/1CkijR-hREoOCMVA5z_yc-MYkvLFecZcj/view?usp=sharing) | 71.28 | 73.23 | 75.28 | 
-| [AdvSSL](https://arxiv.org/abs/1802.07934) | 65.67 | [69.89](https://drive.google.com/file/d/16zt6pBQEe8yBnbw12rEBoZR4npdYnoL0/view?usp=sharing) | 71.53 | 74.48 | 75.86 |
-| [GCT](https://arxiv.org/abs/2008.05258) | 67.19 | [72.14](https://drive.google.com/file/d/1F21G7CtLOh5iyORnKgaetKent6oAAguZ/view?usp=sharing) | 73.62 | 74.82 | 75.73 |
+| SupOnly | 64.55 | [68.38](https://drive.google.com/file/d/1F73YYPJCV-4Lru_74npYXOE2ZxoG9CYO/view?usp=sharing) | 70.69 | 73.56| [75.32](https://drive.google.com/file/d/1QRXLzpYPh5DgR86xSLniPPv0vjJV6noT/view?usp=sharing) |
+| [MT](https://arxiv.org/abs/1703.01780) | 66.08 | [69.81](https://drive.google.com/file/d/1AbVrldtzH8VvigC-R12rSwup_RWPGDPD/view?usp=sharing) | 71.28 | 73.23 | 75.28 | 
+| [AdvSSL](https://arxiv.org/abs/1802.07934) | 65.67 | [69.89](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 71.53 | 74.48 | 75.86 |
+| [GCT](https://arxiv.org/abs/2008.05258) | 67.19 | [72.14](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | 73.62 | 74.82 | 75.73 |
 
 **NOTE**: Please click the mIOU with the link to download the corresponding pretrained model.
 
