@@ -113,6 +113,7 @@ class SSLS4L(ssl_base._SSLBase):
     def _train(self, data_loader, epoch):
         self.meters.reset()
         lbs = self.args.labeled_batch_size
+        original_lbs = int(self.args.labeled_batch_size / 2)
 
         self.model.train()
 
@@ -135,18 +136,18 @@ class SSLS4L(ssl_base._SSLBase):
             pred_rotation = tool.dict_value(resulter, 'rotation')
 
             # calculate the supervised task constraint on the un-rotated labeled data
-            l_pred = func.split_tensor_tuple(pred, 0, lbs)
-            l_gt = func.split_tensor_tuple(gt, 0, lbs)
-            l_inp = func.split_tensor_tuple(inp, 0, lbs)
+            l_pred = func.split_tensor_tuple(pred, 0, original_lbs)
+            l_gt = func.split_tensor_tuple(gt, 0, original_lbs)
+            l_inp = func.split_tensor_tuple(inp, 0, original_lbs)
 
             task_loss = self.criterion.forward(l_pred, l_gt[:-1], l_inp)
             task_loss = torch.mean(task_loss)
             
             # calculate the supervised task constraint on the rotated labeled data
             original_bs = int(self.args.batch_size / 2)
-            l_rotated_pred = func.split_tensor_tuple(pred, original_bs, original_bs + lbs)
-            l_rotated_gt = func.split_tensor_tuple(gt, original_bs, original_bs + lbs)
-            l_rotated_inp = func.split_tensor_tuple(inp, original_bs, original_bs + lbs)
+            l_rotated_pred = func.split_tensor_tuple(pred, original_bs, original_bs + original_lbs)
+            l_rotated_gt = func.split_tensor_tuple(gt, original_bs, original_bs + original_lbs)
+            l_rotated_inp = func.split_tensor_tuple(inp, original_bs, original_bs + original_lbs)
 
             rotated_task_loss = self.criterion.forward(l_rotated_pred, l_rotated_gt[:-1], l_rotated_inp)
             rotated_task_loss = self.args.rotated_sup_scale * torch.mean(rotated_task_loss)
