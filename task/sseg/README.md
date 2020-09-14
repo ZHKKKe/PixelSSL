@@ -20,6 +20,17 @@ The training rules proposed in paper [Guided Collaborative Training for Pixel-wi
 
 **NOTE**: Please click the mIOU with the link to download the corresponding pretrained model.
 
+<br/>
+
+**Known Problems**:
+- **The Input Image is Center Cropped When Validating.**  
+  The PascalVOC dataloader used in this demo task is adapted from [this repository](https://github.com/jfzhang95/pytorch-deeplab-xception). 
+  Their dataloader applies a `FixScaleCrop` operation during validation (please check [here](https://github.com/ZHKKKe/PixelSSL/blob/150fb33d6a6430ec38f0287d71bb1420bfe48405/task/sseg/data.py#L105)). This operation is not suitable for semantic segmentation because it will calculate the metrics in a center cropped version of the input image.  
+  However, when conducting validation on the original input image (without resize and crop), **all pre-trained models have 2%~3% lower mIOU**. We are still trying to solve this problem.
+  We thank [@charlesCXK](https://github.com/charlesCXK) for pointing out this problem.
+
+<br/>
+
 The following sections will introduce how to prepare and run the code.  
 We assume that you are currently at the root path of the task, i.e., `task/sseg`.
 
