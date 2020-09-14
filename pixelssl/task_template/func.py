@@ -178,3 +178,19 @@ class TaskFunc:
         return task_gt
 
     # ---------------------------------------------------------------------
+    
+    # ---------------------------------------------------------------------
+    # Functions for SSL_S4L
+    # ---------------------------------------------------------------------
+
+    def ssls4l_rc_in_channels(self):
+        """ Define the input channels of the rotation classifier used in SSL_S4L.
+
+            Since different tasks use different model architectures. The input channel of the rotating 
+            classifier should be changed. Usually, we use the feature map encoded by the task model or 
+            the output of the task model as the input of the rotation classifier.
+        """
+
+        raise NotImplementedError
+
+    # ---------------------------------------------------------------------
