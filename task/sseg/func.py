@@ -45,7 +45,7 @@ class SemanticSegmentationFunc(pixelssl.func_template.TaskFunc):
         label = self.args.num_classes * gt[mask].astype('int') + pred[mask]
         count = np.bincount(label, minlength=self.args.num_classes ** 2)
         confusion_matrix = count.reshape(self.args.num_classes, self.args.num_classes)
-        meters.update('confusion_matrix', confusion_matrix)
+        meters.update('{0}_confusion_matrix'.format(id_str), confusion_matrix)
 
         acc_str = '{0}_{1}_acc'.format(id_str, self.METRIC_STR)
         acc_class_str = '{0}_{1}_acc-class'.format(id_str, self.METRIC_STR)
@@ -61,7 +61,7 @@ class SemanticSegmentationFunc(pixelssl.func_template.TaskFunc):
         if meters.has_key(fwIoU_str):
             meters.reset(fwIoU_str)
 
-        cmat_sum = meters['confusion_matrix'].sum
+        cmat_sum = meters['{0}_confusion_matrix'.format(id_str)].sum
 
         acc = np.diag(cmat_sum).sum() / cmat_sum.sum()
         meters.update(acc_str, acc)
