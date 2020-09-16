@@ -12,6 +12,6 @@ __author__ = 'PixelSSL Contributors {0}'.format(
 __author_email__ = 'kezhanghan@outlook.com'
 
 __updates__ = {
-    '0.1.1': ' v0.1.1 supports a new semi-supervised learning algorihms (S4L) and fixes some bugs in the demo code of semantic segmentation task',
+    '0.1.1': 'supports a new semi-supervised learning algorihms (S4L) and fixes some bugs in the demo code of semantic segmentation task',
     '0.1.0': 'supports supervised-only learning, three semi-supervised learning algorithms (MT, AdvSSL, GCT) and one example task (semantic segmentation)',
 }
