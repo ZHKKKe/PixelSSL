@@ -200,6 +200,16 @@ class SemanticSegmentationFunc(pixelssl.func_template.TaskFunc):
 
     # ---------------------------------------------------------------------
     
+    # ---------------------------------------------------------------------
+    # Functions for SSL_S4L
+    # ---------------------------------------------------------------------
+
+    def ssls4l_rc_in_channels(self):
+        return self.args.num_classes
+        # return 2048
+
+    # ---------------------------------------------------------------------
+
 
 class FDGTGenerator(nn.Module):
     def __init__(self, args):
