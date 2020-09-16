@@ -6,11 +6,16 @@
 
 ## Updates
 
-- **[Sep 14 2019] A Bug in the Code of DeepLabV2 is Fixed.**  
-  For semantic segmentation, a bug of ASPP module in DeepLabV2 code is fixed. The effect of this bug on the results is negligible. The new pre-trained model has been uploaded.
+- **[Sep 16 2020] PixelSSL v0.1.1 is Released!**  
+  v0.1.1 supports a new semi-supervised learning algorihms ([S4L](https://arxiv.org/abs/1905.03670)) and fixes some bugs in the demo code of semantic segmentation task.
+  
+  Bug fix:  
+    - Fixed the bug of the ASPP module in the DeepLabV2 model.
+    - Fixed the bug of sharing `confusion_matrix` when calculating the semantic segmentation metric in multi-model SSL algorithm, e.g., MT, GCT.  
 
+<br/>
 
-- **[Aug 13 2019] PixelSSL v0.1.0 is Published!**  
+- **[Aug 13 2020] PixelSSL v0.1.0 is Released!**  
   v0.1.0 supports supervised-only learning, three semi-supervised learning algorithms 
   ([MT](https://arxiv.org/abs/1703.01780), 
   [AdvSSL](https://arxiv.org/abs/1802.07934), 

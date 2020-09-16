@@ -14,11 +14,12 @@ As a result, the SSL algorithms integrated in PixelSSL are compatible with all t
 
 This project includes the code of our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) (GCT).
 
-**News**:
-- **[Sep 14 2019] A Bug in the Code of DeepLabV2 is Fixed.**  
-  For semantic segmentation, a bug of ASPP module in DeepLabV2 code is fixed. The effect of this bug on the results is negligible. The new pre-trained model has been uploaded.
+## News
+- **[Sep 16 2020] PixelSSL v0.1.1 is Released!**  
+  v0.1.1 supports a new semi-supervised learning algorihms ([S4L](https://arxiv.org/abs/1905.03670)) and fixes some bugs in the demo code of semantic segmentation task.
+  
 
-- **[Aug 13 2019] PixelSSL v0.1.0 is Published!**  
+- **[Aug 13 2020] PixelSSL v0.1.0 is Released!**  
   v0.1.0 supports supervised-only learning, three semi-supervised learning algorithms 
   ([MT](https://arxiv.org/abs/1703.01780), 
   [AdvSSL](https://arxiv.org/abs/1802.07934), 
@@ -35,7 +36,7 @@ The algorithms and demo tasks supported by PixelSSL are summarized in the follow
 | :---: | :---: | :---: |
 | SupOnly | v0.1.0 | Coming Soon |
 | [MT](https://arxiv.org/abs/1703.01780) | v0.1.0 | Coming Soon |
-| S4L | Coming Soon | Coming Soon | 
+| [S4L](https://arxiv.org/abs/1905.03670) | v0.1.1 | Coming Soon | 
 | [AdvSSL](https://arxiv.org/abs/1802.07934) | v0.1.0 | Coming Soon |
 | [GCT](https://arxiv.org/abs/2008.05258) | v0.1.0 | Coming Soon |
 
