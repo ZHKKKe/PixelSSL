@@ -24,8 +24,8 @@ config = collections.OrderedDict(
         ('rotation_scale', 0.1),
 
         # arguments - exp
-        # ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_ssls4l.ckpt'),
-        # ('validation', True),
+        ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_ssls4l.ckpt'),
+        ('validation', True),
         
         ('out_path', 'result'),
         
@@ -56,9 +56,6 @@ config = collections.OrderedDict(
         ('lr', 0.00025),
         ('momentum', 0.9),
         ('weight_decay', 0.0005),
-
-        ('milestones', [10, 20]),
-        ('gamma', 0.1),
 
         # arguments - task special model
         ('output_stride', 16),

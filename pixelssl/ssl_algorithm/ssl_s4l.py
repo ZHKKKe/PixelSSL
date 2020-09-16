@@ -26,8 +26,7 @@ This implementation only supports the rotation-based self-supervised pretext tas
 
 def add_parser_arguments(parser):
     ssl_base.add_parser_arguments(parser)
-    parser.add_argument('--rotated-sup-scale', type=float, default=-1, help='label-supervised coefficient for rotated labeled data')
-
+    parser.add_argument('--rotated-sup-scale', type=float, default=-1, help='task-supervised coefficient for rotated labeled data')
     parser.add_argument('--rotation-scale', type=float, default=-1, help='rotation-based self-supervised coefficient')
 
 
@@ -77,9 +76,11 @@ class SSLS4L(ssl_base._SSLBase):
         # create models
         self.task_model = func.create_model(model_funcs[0], 'task_model', args=self.args).module
         self.rotation_classifier = RotationClassifer(self.task_func.ssls4l_rc_in_channels())
+
         # wrap 'self.task_model' and 'self.rotation_classifier' into a single model
         self.model = WrappedS4LModel(self.args, self.task_model, self.rotation_classifier)
         self.model = nn.DataParallel(self.model).cuda()
+        
         # call 'patch_replication_callback' to use the `sync_batchnorm` layer
         patch_replication_callback(self.model)
         self.models = {'model': self.model}
@@ -98,7 +99,6 @@ class SSLS4L(ssl_base._SSLBase):
         self.criterions = {'criterion': self.criterion, 'rotation_criterion': self.rotation_criterion}
 
         # the batch size is doubled in S4L since it creates an extra rotated sample for each sample
-        # NOTE: we do not regard the rotated samples as the labeled data
         self.args.batch_size *= 2
         self.args.labeled_batch_size *= 2
         self.args.unlabeled_batch_size *= 2
@@ -112,8 +112,8 @@ class SSLS4L(ssl_base._SSLBase):
 
     def _train(self, data_loader, epoch):
         self.meters.reset()
-        lbs = self.args.labeled_batch_size
         original_lbs = int(self.args.labeled_batch_size / 2)
+        original_bs = int(self.args.batch_size / 2)
 
         self.model.train()
 
@@ -125,7 +125,7 @@ class SSLS4L(ssl_base._SSLBase):
             # the last element in the tuple 'gt' is the ground truth of the rotation angle
             inp, gt = self._batch_prehandle(inp, gt, True)
             if len(gt) - 1 > 1 and idx == 0:
-                self._data_warn()
+                self._inp_warn()
 
             self.optimizer.zero_grad()
 
@@ -140,22 +140,21 @@ class SSLS4L(ssl_base._SSLBase):
             l_gt = func.split_tensor_tuple(gt, 0, original_lbs)
             l_inp = func.split_tensor_tuple(inp, 0, original_lbs)
 
-            task_loss = self.criterion.forward(l_pred, l_gt[:-1], l_inp)
-            task_loss = torch.mean(task_loss)
+            unrotated_task_loss = self.criterion.forward(l_pred, l_gt[:-1], l_inp)
+            unrotated_task_loss = torch.mean(unrotated_task_loss)
+            self.meters.update('unrotated_task_loss', unrotated_task_loss.data)
             
             # calculate the supervised task constraint on the rotated labeled data
-            original_bs = int(self.args.batch_size / 2)
             l_rotated_pred = func.split_tensor_tuple(pred, original_bs, original_bs + original_lbs)
             l_rotated_gt = func.split_tensor_tuple(gt, original_bs, original_bs + original_lbs)
             l_rotated_inp = func.split_tensor_tuple(inp, original_bs, original_bs + original_lbs)
 
             rotated_task_loss = self.criterion.forward(l_rotated_pred, l_rotated_gt[:-1], l_rotated_inp)
             rotated_task_loss = self.args.rotated_sup_scale * torch.mean(rotated_task_loss)
+            self.meters.update('rotated_task_loss', rotated_task_loss.data)
 
-            task_loss = task_loss + rotated_task_loss
+            task_loss = unrotated_task_loss + rotated_task_loss
             
-            self.meters.update('task_loss', task_loss.data)
-
             # calculate the self-supervised rotation constraint
             rotation_loss = self.rotation_criterion.forward(pred_rotation, gt[-1])
             rotation_loss = self.args.rotation_scale * torch.mean(rotation_loss)
@@ -178,7 +177,8 @@ class SSLS4L(ssl_base._SSLBase):
             if idx % self.args.log_freq == 0:
                 logger.log_info('step: [{0}][{1}/{2}]\tbatch-time: {meters[batch_time]:.3f}\n'
                                 '  task-{3}\t=>\t'
-                                'task-loss: {meters[task_loss]:.6f}\n'
+                                'unrotated-task-loss: {meters[unrotated_task_loss]:.6f}\t'
+                                'rotated-task-loss: {meters[rotated_task_loss]:.6f}\n'
                                 '  rotation-{3}\t=>\t'
                                 'rotation-loss: {meters[rotation_loss]:.6f}\t'
                                 'rotation-acc: {meters[rotation_acc]:.6f}\n'
@@ -209,7 +209,7 @@ class SSLS4L(ssl_base._SSLBase):
 
             inp, gt = self._batch_prehandle(inp, gt, False)
             if len(gt) - 1 > 1 and idx == 0:
-                self._data_warn()
+                self._inp_warn()
 
             resulter, debugger = self.model.forward(inp)
             pred = tool.dict_value(resulter, 'pred')
@@ -224,12 +224,6 @@ class SSLS4L(ssl_base._SSLBase):
             rotation_loss = self.args.rotation_scale * torch.mean(rotation_loss)
             self.meters.update('rotation_loss', rotation_loss.data)
 
-            _, angle_idx = pred_rotation.topk(1, 1, True, True)
-            angle_idx = angle_idx.t()
-            rotation_acc = angle_idx.eq(gt[-1].view(1, -1).expand_as(angle_idx))
-            rotation_acc = rotation_acc.view(-1).float().sum(0, keepdim=True).mul_(100.0 / self.args.batch_size)
-            self.meters.update('rotation_acc', rotation_acc.data[0])
-
             self.task_func.metrics(activated_pred, gt[:-1], inp, self.meters, id_str='task')
 
             # logging
@@ -239,8 +233,7 @@ class SSLS4L(ssl_base._SSLBase):
                                 '  task-{3}\t=>\t'
                                 'task-loss: {meters[task_loss]:.6f}\n'
                                 '  rotation-{3}\t=>\t'
-                                'rotation-loss: {meters[rotation_loss]:.6f}\t'
-                                'rotation-acc: {meters[rotation_acc]:.6f}\n'
+                                'rotation-loss: {meters[rotation_loss]:.6f}\n'
                                 .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
 
             # visualization
@@ -259,7 +252,8 @@ class SSLS4L(ssl_base._SSLBase):
                         metrics_info[id_str] += '{0}: {1:.6}\t'.format(key, self.meters[key])
 
         logger.log_info('Validation metrics:\n task-metrics\t=>\t{0}\n'.format(metrics_info['task'].replace('_', '-')))
-            
+
+
     def _save_checkpoint(self, epoch):
         state = {
             'algorithm': self.NAME,
@@ -365,7 +359,7 @@ class SSLS4L(ssl_base._SSLBase):
         
         return tensor
 
-    def _data_warn(self):
+    def _inp_warn(self):
         logger.log_warn('More than one ground truth of the task model is given in SSL_S4L\n'
                         'You try to train the task model with more than one (pred & gt) pairs\n'
                         'Please make sure that:\n'
