@@ -4,6 +4,7 @@
 import io
 import os
 import sys
+import cv2
 import random
 from PIL import Image, ImageOps, ImageFilter
 import numpy as np
@@ -102,7 +103,7 @@ class PascalVocDataset(pixelssl.data_template.TaskDataset):
     def _val_prehandle(self, image, label):
         sample = {self.IMAGE: image, self.LABEL: label}
         composed_transforms = transforms.Compose([
-            FixScaleCrop(crop_size=self.args.im_size),
+            FixedSizeScale(size=self.args.im_size),
             Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             ToTensor()])
 
@@ -244,43 +245,39 @@ class RandomScaleCrop(object):
         return {'image': img, 'label': mask}
 
 
-class FixScaleCrop(object):
-    def __init__(self, crop_size):
-        self.crop_size = crop_size
-
+class FixedSizeScale(object):
+    def __init__(self, size):
+        self.size = size
+    
     def __call__(self, sample):
         img = sample['image']
         mask = sample['label']
+
         w, h = img.size
-        if w > h:
-            oh = self.crop_size
-            ow = int(1.0 * w * oh / h)
+        if w <= h:
+            ow = self.size
+            oh = h * ow / w
         else:
-            ow = self.crop_size
-            oh = int(1.0 * h * ow / w)
+            oh = self.size
+            ow = w * oh / h
+        oh, ow = int(oh), int(ow)
+
         img = img.resize((ow, oh), Image.BILINEAR)
         mask = mask.resize((ow, oh), Image.NEAREST)
-        # center crop
-        w, h = img.size
-        x1 = int(round((w - self.crop_size) / 2.))
-        y1 = int(round((h - self.crop_size) / 2.))
-        img = img.crop((x1, y1, x1 + self.crop_size, y1 + self.crop_size))
-        mask = mask.crop((x1, y1, x1 + self.crop_size, y1 + self.crop_size))
 
-        return {'image': img, 'label': mask}
+        pad_w = max(self.size - ow, 0)
+        pad_h = max(self.size - oh, 0)
 
+        if pad_w > 0 or pad_h > 0:
+            img = np.array(img).astype(np.float32)
+            mask = np.array(mask).astype(np.float32)
 
-class FixedResize(object):
-    def __init__(self, size):
-        self.size = (size, size)  # size: (h, w)
+            img = cv2.copyMakeBorder(
+                img, 0, pad_h, 0, pad_w, cv2.BORDER_CONSTANT, value=(0.0, 0.0, 0.0))
+            mask = cv2.copyMakeBorder(
+                mask, 0, pad_h, 0, pad_w, cv2.BORDER_CONSTANT, value=(0.0, 0.0, 0.0))
 
-    def __call__(self, sample):
-        img = sample['image']
-        mask = sample['label']
-
-        assert img.size == mask.size
-
-        img = img.resize(self.size, Image.BILINEAR)
-        mask = mask.resize(self.size, Image.NEAREST)
-
+            img = Image.fromarray(img.astype(np.uint8))
+            mask = Image.fromarray(mask.astype(np.uint8))
+            
         return {'image': img, 'label': mask}

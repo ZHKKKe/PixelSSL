@@ -8,29 +8,18 @@
 This is the demo code of semantic segmentation used to validate the semi-supervised algorithms in PixelSSL.
 
 ## Introduction
-Semantic segmentation takes an image as input and predicts a series of category masks, which link each pixel in the input image to a class. In this implementation, the supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with the [ResNet-101](https://arxiv.org/abs/1512.03385) backbone. All experiments are conducted on the [Pascal VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/) dataset, which comprises 20 foreground classes along with 1 background class. The extra annotation set from the [Segmentation Boundaries Dataset (SBD)](http://home.bharathh.info/pubs/codes/SBD/download.html) is combined to expand the dataset. 
+Semantic segmentation takes an image as input and predicts a series of category masks, which link each pixel in the input image to a class. In this implementation, the supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with the [ResNet-101](https://arxiv.org/abs/1512.03385) backbone. The `MSC` and `CRF` tricks in the original [DeepLab-v2](https://arxiv.org/abs/1606.00915) paper are closed. All experiments are conducted on the [Pascal VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/) dataset, which comprises 20 foreground classes along with 1 background class. The extra annotation set from the [Segmentation Boundaries Dataset (SBD)](http://home.bharathh.info/pubs/codes/SBD/download.html) is combined to expand the dataset. 
 
-The training rules proposed in paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) are applied to set the arguments. All experiments are trained with **4 Nvidia GPUs**. For semi-supervised learning, 1/16, 1/8, 1/4, 1/2 samples are randomly extracted as the labeled subset, and the rest of the training set is used as the unlabeled subset. Note that the same data splits are used in all experiments. The main experimental results (mIOU averaged over 3 runs) are as follows:
+The training rules proposed in the [GCT](https://arxiv.org/abs/2008.05258) paper are applied to set the arguments. All experiments are trained with **4 Nvidia GPUs**. For semi-supervised learning, 1/16, 1/8, 1/4, 1/2 samples are randomly extracted as the labeled subset, and the rest of the training set is used as the unlabeled subset. Note that the same data splits are used in all experiments. The main experimental results are as follows:
 | SSL/Labels | 1/16 labels | 1/8 labels | 1/4 labels | 1/2 labels | full labels | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| SupOnly | 64.55 | [68.38](https://drive.google.com/file/d/1F73YYPJCV-4Lru_74npYXOE2ZxoG9CYO/view?usp=sharing) | 70.69 | 73.56| [75.32](https://drive.google.com/file/d/1QRXLzpYPh5DgR86xSLniPPv0vjJV6noT/view?usp=sharing) |
-| [MT](https://arxiv.org/abs/1703.01780) | 66.08 | [69.81](https://drive.google.com/file/d/1AbVrldtzH8VvigC-R12rSwup_RWPGDPD/view?usp=sharing) | 71.28 | 73.23 | 75.28 | 
-| [AdvSSL](https://arxiv.org/abs/1802.07934) | 65.67 | [69.89](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 71.53 | 74.48 | 75.86 |
-| [S4L](https://arxiv.org/abs/1905.03670) | 64.71 | [68.65](https://drive.google.com/file/d/1WTElznEp5z8M_Vn647PkjKizU98VcksC/view?usp=sharing) | 70.97 |  73.43 |  75.38 |
-| [GCT](https://arxiv.org/abs/2008.05258) | 67.19 | [72.14](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | 73.62 | 74.82 | 75.73 |  
+| SupOnly | - | [65.60](https://drive.google.com/file/d/1F73YYPJCV-4Lru_74npYXOE2ZxoG9CYO/view?usp=sharing) | - | - | [73.63](https://drive.google.com/file/d/1QRXLzpYPh5DgR86xSLniPPv0vjJV6noT/view?usp=sharing) |
+| [S4L](https://arxiv.org/abs/1905.03670) | - | [67.15](https://drive.google.com/file/d/1WTElznEp5z8M_Vn647PkjKizU98VcksC/view?usp=sharing) | - | - | - |
+| [MT](https://arxiv.org/abs/1703.01780) | - | [67.65](https://drive.google.com/file/d/1AbVrldtzH8VvigC-R12rSwup_RWPGDPD/view?usp=sharing) | - | - | - | 
+| [AdvSSL](https://arxiv.org/abs/1802.07934) | - | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | - | - | - |
+| [GCT](https://arxiv.org/abs/2008.05258) | - | [70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | - | - | - |  
 
 **NOTE**: Please click the mIOU with the link to download the corresponding pretrained model.
-
-<br/>
-
-**Known Problems**:
-- **The Input Image is Center Cropped When Validating.**  
-  The PascalVOC dataloader used in this demo task is adapted from [this repository](https://github.com/jfzhang95/pytorch-deeplab-xception). 
-  Their dataloader applies a `FixScaleCrop` operation during validation (please check [here](https://github.com/ZHKKKe/PixelSSL/blob/150fb33d6a6430ec38f0287d71bb1420bfe48405/task/sseg/data.py#L105)). This operation is not suitable for semantic segmentation because it will calculate the metrics in a center cropped version of the input image.  
-  However, when conducting validation on the original input image (without resize and crop), **all pre-trained models have 2%~3% lower mIOU**. We are still trying to solve this problem.
-  We thank [@charlesCXK](https://github.com/charlesCXK) for pointing out this problem.
-
-<br/>
 
 The following sections will introduce how to prepare and run the code.  
 We assume that you are currently at the root path of the task, i.e., `task/sseg`.

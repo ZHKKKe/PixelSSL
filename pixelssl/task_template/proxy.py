@@ -396,8 +396,9 @@ class TaskProxy:
                     valsets.append(self._load_dataset(set_name, set_dir, is_train=False))
             valset = nndata.JointDatasetsWrapper(valsets, [], ignore_unlabeled=True)
             val_samples = len(valset.labeled_idxs)
-
-        self.val_loader = torch.utils.data.DataLoader(valset, batch_size=self.args.batch_size,
+        
+        # NOTE: batch size is set to 1 during the validation
+        self.val_loader = torch.utils.data.DataLoader(valset, batch_size=1,
             shuffle=False, num_workers=self.args.num_workers, pin_memory=True)
 
         # check the data loaders
