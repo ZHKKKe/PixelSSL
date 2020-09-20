@@ -8,16 +8,16 @@
 This is the demo code of semantic segmentation used to validate the semi-supervised algorithms in PixelSSL.
 
 ## Introduction
-Semantic segmentation takes an image as input and predicts a series of category masks, which link each pixel in the input image to a class. In this implementation, the supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with the [ResNet-101](https://arxiv.org/abs/1512.03385) backbone. The `MSC` and `CRF` tricks in the original [DeepLab-v2](https://arxiv.org/abs/1606.00915) paper are closed. All experiments are conducted on the [Pascal VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/) dataset, which comprises 20 foreground classes along with 1 background class. The extra annotation set from the [Segmentation Boundaries Dataset (SBD)](http://home.bharathh.info/pubs/codes/SBD/download.html) is combined to expand the dataset. 
+Semantic segmentation takes an image as input and predicts a series of category masks, which link each pixel in the input image to a class. In this implementation, the supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with the [ResNet-101](https://arxiv.org/abs/1512.03385) backbone, which is pretrained by the [ImageNet](http://www.image-net.org/) dataset and the [COCO](https://cocodataset.org/#home) dataset. The **MSC** and **CRF** tricks used in the original [DeepLab-v2](https://arxiv.org/abs/1606.00915) paper are closed to save run-time memory. All experiments are conducted on the [Pascal VOC 2012](http://host.robots.ox.ac.uk/pascal/VOC/) dataset, which comprises 20 foreground classes along with 1 background class. The extra annotation set from the [Segmentation Boundaries Dataset (SBD)](http://home.bharathh.info/pubs/codes/SBD/download.html) is combined to expand the dataset. 
 
 The training rules proposed in the [GCT](https://arxiv.org/abs/2008.05258) paper are applied to set the arguments. All experiments are trained with **4 Nvidia GPUs**. For semi-supervised learning, 1/16, 1/8, 1/4, 1/2 samples are randomly extracted as the labeled subset, and the rest of the training set is used as the unlabeled subset. Note that the same data splits are used in all experiments. The main experimental results are as follows:
 | SSL/Labels | 1/16 labels | 1/8 labels | 1/4 labels | 1/2 labels | full labels | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| SupOnly | - | [65.60](https://drive.google.com/file/d/1F73YYPJCV-4Lru_74npYXOE2ZxoG9CYO/view?usp=sharing) | - | - | [73.63](https://drive.google.com/file/d/1QRXLzpYPh5DgR86xSLniPPv0vjJV6noT/view?usp=sharing) |
-| [S4L](https://arxiv.org/abs/1905.03670) | - | [67.15](https://drive.google.com/file/d/1WTElznEp5z8M_Vn647PkjKizU98VcksC/view?usp=sharing) | - | - | - |
-| [MT](https://arxiv.org/abs/1703.01780) | - | [67.65](https://drive.google.com/file/d/1AbVrldtzH8VvigC-R12rSwup_RWPGDPD/view?usp=sharing) | - | - | - | 
-| [AdvSSL](https://arxiv.org/abs/1802.07934) | - | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | - | - | - |
-| [GCT](https://arxiv.org/abs/2008.05258) | - | [70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | - | - | - |  
+| SupOnly | 61.24 | [65.60](https://drive.google.com/file/d/1F73YYPJCV-4Lru_74npYXOE2ZxoG9CYO/view?usp=sharing) | 67.87 | 71.96 | [73.63](https://drive.google.com/file/d/1QRXLzpYPh5DgR86xSLniPPv0vjJV6noT/view?usp=sharing) |
+| [MT](https://arxiv.org/abs/1703.01780) | 63.11 | [67.65](https://drive.google.com/file/d/1AbVrldtzH8VvigC-R12rSwup_RWPGDPD/view?usp=sharing) | 69.27 | 72.04 | 73.59 | 
+| [S4L](https://arxiv.org/abs/1905.03670) | 61.75 | [67.15](https://drive.google.com/file/d/1WTElznEp5z8M_Vn647PkjKizU98VcksC/view?usp=sharing) | 68.42 | 71.98 | 73.66 |
+| [AdvSSL](https://arxiv.org/abs/1802.07934) | 62.61 | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 69.94 | 72.10 | 74.15 |
+| [GCT](https://arxiv.org/abs/2008.05258) | 65.18 | [70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | 71.53 | 72.45 | 74.06 |  
 
 **NOTE**: Please click the mIOU with the link to download the corresponding pretrained model.
 
