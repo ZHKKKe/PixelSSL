@@ -19,7 +19,8 @@ The training rules proposed in the [GCT](https://arxiv.org/abs/2008.05258) paper
 | [AdvSSL](https://arxiv.org/abs/1802.07934) | 62.61 | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 69.94 | 72.10 | 74.15 |
 | [GCT](https://arxiv.org/abs/2008.05258) | 65.18 | [70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | 71.53 | 72.45 | 74.06 |  
 
-**NOTE**: Please click the mIOU with the link to download the corresponding pretrained model.
+**NOTE**: Please click the mIOU with the link to download the corresponding pretrained model.  
+**NOTE**: The mIoU in the above table are lower than the results reported in the [GCT](https://arxiv.org/abs/2008.05258) paper. The higher mIoU in the paper comes from a `CenterCrop` operation that shouldn't have during the validation. The bug has been fixed in [this commit](https://github.com/ZHKKKe/PixelSSL/commit/b655e514ec2917adf3210a5c4f1e362b8d446f51). Since all models' performance is almost equally degraded, this bug does not affect the conclusions about semi-supervised learning.
 
 The following sections will introduce how to prepare and run the code.  
 We assume that you are currently at the root path of the task, i.e., `task/sseg`.
