@@ -125,11 +125,10 @@ class ResNet(nn.Module):
         x = self.maxpool(x)
 
         x = self.layer1(x)
-        low_level_feat = x
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        return x, low_level_feat
+        return x
 
     def _init_weight(self):
         for m in self.modules():
@@ -155,6 +154,15 @@ class ResNet(nn.Module):
                     model_dict[k] = v
             state_dict.update(model_dict)
             self.load_state_dict(state_dict)
+
+
+def ResNet50(output_stride, BatchNorm, pretrained_url=None):
+    """Constructs a ResNet-50 model.
+    Args:
+        pretrained_url (str): returns a model from url, which is pre-trained on ImageNet 
+    """
+    model = ResNet(Bottleneck, [3, 4, 6, 3], output_stride, BatchNorm, pretrained_url)
+    return model
 
 
 def ResNet101(output_stride, BatchNorm, pretrained_url=None):

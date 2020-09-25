@@ -11,13 +11,13 @@ def add_parser_arguments(parser):
     pixelssl.criterion_template.add_parser_arguments(parser)
 
 
-def deeplab_criterion():
-    return DeepLabCriterion
+def sseg_criterion():
+    return CommonSSEGCriterion
 
 
-class DeepLabCriterion(pixelssl.criterion_template.TaskCriterion):
+class CommonSSEGCriterion(pixelssl.criterion_template.TaskCriterion):
     def __init__(self, args):
-        super(DeepLabCriterion, self).__init__(args)
+        super(CommonSSEGCriterion, self).__init__(args)
         self.cross_entropy = nn.CrossEntropyLoss(
             ignore_index=self.args.ignore_index, reduction='none')
 

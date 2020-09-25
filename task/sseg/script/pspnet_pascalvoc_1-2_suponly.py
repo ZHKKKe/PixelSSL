@@ -21,8 +21,8 @@ config = collections.OrderedDict(
         ('ssl_algorithm', pixelssl.SSL_NULL),
 
         # arguments - exp
-        ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_suponly.ckpt'),
-        ('validation', True),
+        # ('resume', ''),
+        # ('validation', True),
         
         ('out_path', 'result'),
         
@@ -38,13 +38,13 @@ config = collections.OrderedDict(
         ('trainset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('valset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('num_workers', 2),
-        ('im_size', 321),
+        ('im_size', 513),
 
-        ('sublabeled_path', 'dataset/PascalVOC/sublabeled_prefix/1-8/0.txt'),
+        ('sublabeled_path', 'dataset/PascalVOC/sublabeled_prefix/1-2/0.txt'),
         ('ignore_unlabeled', True),
 
         # arguments - task specific components
-        ('models', {'model': 'deeplabv2'}),
+        ('models', {'model': 'pspnet'}),
         ('optimizers', {'model': 'sgd'}),
         ('lrers', {'model': 'polynomiallr'}),
         ('criterions', {'model': 'sseg_criterion'}),
@@ -56,14 +56,14 @@ config = collections.OrderedDict(
 
         # arguments - task special model
         ('output_stride', 16),
-        ('backbone', 'resnet101-coco'),
+        ('backbone', 'resnet101'),
 
         # arguments - task special data
-        ('val_rescaling', True),
-        ('train_base_size', 400),
+        ('val_rescaling', False),
+        ('train_base_size', 513),
 
         # arguments - training details
-        ('epochs', 40),
+        ('epochs', 80),
         ('batch_size', 4),
         ('unlabeled_batch_size', 0), 
 
