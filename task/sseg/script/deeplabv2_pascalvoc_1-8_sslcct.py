@@ -18,14 +18,15 @@ config = collections.OrderedDict(
         ('exp_id', os.path.basename(__file__).split(".")[0]),
         
         # arguments - SSL algorithm
-        ('ssl_algorithm', pixelssl.SSL_S4L),
+        ('ssl_algorithm', pixelssl.SSL_CCT),
 
-        ('rotated_sup_scale', 0.1),
-        ('rotation_scale', 0.1),
+        ('cons_scale', 10.0),
+        ('cons_rampup_epochs', 2),
+        ('ad_lr_scale', 10.0),
 
         # arguments - exp
-        ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_ssls4l.ckpt'),
-        ('validation', True),
+        # ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_sslcct.ckpt'),
+        # ('validation', True),
         
         ('out_path', 'result'),
         

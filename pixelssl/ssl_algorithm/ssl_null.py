@@ -218,7 +218,7 @@ class SSLNULL(ssl_base._SSLBase):
         return checkpoint['epoch']
         
     # -------------------------------------------------------------------------------------------
-    # Tool Functions for the SSL_NULL Framework
+    # Tool Functions for SSL_NULL
     # -------------------------------------------------------------------------------------------
 
     def _visualize(self, epoch, idx, is_train, l_inp, l_pred, l_gt):

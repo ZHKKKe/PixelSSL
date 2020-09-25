@@ -206,7 +206,18 @@ class SemanticSegmentationFunc(pixelssl.func_template.TaskFunc):
 
     def ssls4l_rc_in_channels(self):
         return self.args.num_classes
-        # return 2048
+
+    # ---------------------------------------------------------------------
+
+    # ---------------------------------------------------------------------
+    # Functions for SSL_CCT
+    # ---------------------------------------------------------------------
+    
+    def sslcct_activate_ad_preds(self, ad_preds):
+        activated_ad_preds = []
+        for ad_pred in ad_preds:
+            activated_ad_preds.append(F.softmax(ad_pred, dim=1))
+        return activated_ad_preds
 
     # ---------------------------------------------------------------------
 

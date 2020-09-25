@@ -284,7 +284,7 @@ class SSLS4L(ssl_base._SSLBase):
         return checkpoint['epoch']
 
     # -------------------------------------------------------------------------------------------
-    # Tool Functions for the SSL_S4L Framework
+    # Tool Functions for SSL_S4L
     # -------------------------------------------------------------------------------------------
 
     def _visualize(self, epoch, idx, is_train, inp, pred, gt):

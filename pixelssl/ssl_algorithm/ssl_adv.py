@@ -374,7 +374,7 @@ class SSLADV(ssl_base._SSLBase):
 
         checkpoint_algorithm = tool.dict_value(checkpoint, 'algorithm', default='unknown')
         if checkpoint_algorithm != self.NAME:
-            logger.log_err('Unmatched ssl algorithm format in checkpoint => required: {0} - given: {1}\n'
+            logger.log_err('Unmatched SSL algorithm format in checkpoint => required: {0} - given: {1}\n'
                            .format(self.NAME, checkpoint_algorithm))
 
         self.model.load_state_dict(checkpoint['model'])
@@ -387,7 +387,7 @@ class SSLADV(ssl_base._SSLBase):
         return checkpoint['epoch']
         
     # -------------------------------------------------------------------------------------------
-    # Tool Functions for the SSL_ADV Framework
+    # Tool Functions for SSL_ADV
     # -------------------------------------------------------------------------------------------
 
     def _visualize(self, epoch, idx, is_train, 

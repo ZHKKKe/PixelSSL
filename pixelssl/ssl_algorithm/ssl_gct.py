@@ -19,7 +19,7 @@ from pixelssl.nn.module import patch_replication_callback, SynchronizedBatchNorm
 from . import ssl_base
 
 
-""" Implementation of Guided Collaborative Training (GCT) for pixel-wise semi-supervised learning
+""" Implementation of the GCT algorithm for SSL
 
 This method is proposed in paper:
     'Guided Collaborative Training for Pixel-wise Semi-Supervised Learning'
@@ -383,7 +383,7 @@ class SSLGCT(ssl_base._SSLBase):
         
         checkpoint_algorithm = tool.dict_value(checkpoint, 'algorithm', default='unknown')
         if checkpoint_algorithm != self.NAME:
-            logger.log_err('Unmatched ssl algorithm format in checkpoint => required: {0} - given: {1}\n'
+            logger.log_err('Unmatched SSL algorithm format in checkpoint => required: {0} - given: {1}\n'
                            .format(self.NAME, checkpoint_algorithm))
         
         self.l_model.load_state_dict(checkpoint['l_model'])
@@ -478,6 +478,10 @@ class SSLGCT(ssl_base._SSLBase):
 
         loss = task_loss + fc_ssl_loss + dc_ssl_loss
         return loss
+
+    # -------------------------------------------------------------------------------------------
+    # Tool Functions for SSL_GCT
+    # -------------------------------------------------------------------------------------------
 
     def _visualize(self, epoch, idx, is_train, id_str,
                    inp, pred, gt, flawmap, flawmap_gt, dc_gt=None):

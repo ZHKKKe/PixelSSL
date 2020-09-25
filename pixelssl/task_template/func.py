@@ -155,7 +155,7 @@ class TaskFunc:
             input channels of the flaw detector = channels of the input + channels of the task prediction
 
         Returns:
-            int: number of the flaw detector's input channels
+            int: input channels of the flaw detector used in SSL_GCT
         """
 
         raise NotImplementedError
@@ -186,9 +186,34 @@ class TaskFunc:
     def ssls4l_rc_in_channels(self):
         """ Define the input channels of the rotation classifier used in SSL_S4L.
 
-            Since different tasks use different model architectures. The input channel of the rotating 
+            Since different tasks use different model architectures, the input channel of the rotating 
             classifier should be changed. Usually, we use the feature map encoded by the task model or 
             the output of the task model as the input of the rotation classifier.
+
+            Returns:
+                int: input channels of the rotation classification used in SSL_S4L
+        """
+
+        raise NotImplementedError
+
+    # ---------------------------------------------------------------------
+
+    # ---------------------------------------------------------------------
+    # Functions for SSL_CCT
+    # ---------------------------------------------------------------------
+
+    def sslcct_activate_ad_preds(self, ad_preds):
+        """ Activate the predictions from the auxilary decoders used in SSL_CCT.
+
+            Since different tasks use different activation functions, this function is task-specific.
+            The output of this function will be used to calculate the consistency constraint.
+
+            Arguments:
+                ad_preds (list): list of the predictions from the auxilary decoders, and the type of 
+                                 the element is torch.Tensor
+
+            Returns:
+                list: activated predictions from the auxilary decoders
         """
 
         raise NotImplementedError

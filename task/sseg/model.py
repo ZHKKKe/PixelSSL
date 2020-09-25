@@ -55,9 +55,8 @@ class DeepLab(pixelssl.model_template.TaskModel):
 
         resulter['pred'] = (pred, )
         resulter['activated_pred'] = (F.softmax(pred, dim=1), )
-        resulter['s4l_feature'] = (latent, )
         resulter['ssls4l_rc_inp'] = pred
-        # resulter['ssls4l_rc_inp'] = latent
+        resulter['sslcct_ad_inp'] = latent
         return resulter, debugger
 
 
