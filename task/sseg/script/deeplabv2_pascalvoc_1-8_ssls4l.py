@@ -49,7 +49,7 @@ config = collections.OrderedDict(
         # arguments - task specific components
         ('models', {'model': 'deeplabv2'}),
         ('optimizers', {'model': 'sgd'}),
-        ('lrers', {'model': 'multisteplr'}),
+        ('lrers', {'model': 'polynomiallr'}),
         ('criterions', {'model': 'deeplab_criterion'}),
 
         # arguments - task specific optimizer / lr scheduler
