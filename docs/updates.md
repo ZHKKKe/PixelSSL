@@ -6,6 +6,11 @@
 
 ## Updates
 
+- **[Oct 28 2020] PixelSSL v0.1.2 is Released!**  
+  v0.1.2 supports [PSPNet](https://arxiv.org/abs/1612.01105) and its SSL results for semantic segmentation task. 
+  
+<br/>
+
 - **[Sep 16 2020] PixelSSL v0.1.1 is Released!**  
   v0.1.1 supports a new semi-supervised learning algorihms ([S4L](https://arxiv.org/abs/1905.03670)) and fixes some bugs in the demo code of semantic segmentation task.
   
