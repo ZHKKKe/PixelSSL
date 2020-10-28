@@ -18,11 +18,23 @@ config = collections.OrderedDict(
         ('exp_id', os.path.basename(__file__).split(".")[0]),
         
         # arguments - SSL algorithm
-        ('ssl_algorithm', pixelssl.SSL_NULL),
+        ('ssl_algorithm', pixelssl.SSL_GCT),
+
+        ('ssl_mode', 'gct'),
+        ('fc_ssl_scale', 1.0),
+        ('dc_ssl_scale', 100.0),
+        ('dc_threshold', 0.6),
+        ('dc_rampup_epochs', 5),
+
+        ('fd_lr', 0.0001),
+        ('fd_scale', 10.0),
+
+        ('mu', 0.5),
+        ('nu', 1),
 
         # arguments - exp
-        ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_suponly.ckpt'),
-        ('validation', True),
+        # ('resume', ''),
+        # ('validation', True),
         
         ('out_path', 'result'),
         
@@ -38,13 +50,13 @@ config = collections.OrderedDict(
         ('trainset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('valset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('num_workers', 2),
-        ('im_size', 321),
+        ('im_size', 513),
 
         ('sublabeled_path', 'dataset/PascalVOC/sublabeled_prefix/1-8/0.txt'),
-        ('ignore_unlabeled', True),
+        ('ignore_unlabeled', False),
 
         # arguments - task specific components
-        ('models', {'model': 'deeplabv2'}),
+        ('models', {'model': 'pspnet'}),
         ('optimizers', {'model': 'sgd'}),
         ('lrers', {'model': 'polynomiallr'}),
         ('criterions', {'model': 'sseg_criterion'}),
@@ -59,13 +71,13 @@ config = collections.OrderedDict(
         ('backbone', 'resnet101-coco'),
 
         # arguments - task special data
-        ('val_rescaling', True),
-        ('train_base_size', 400),
+        ('val_rescaling', False),
+        ('train_base_size', 513),
 
         # arguments - training details
-        ('epochs', 40),
+        ('epochs', 45),
         ('batch_size', 4),
-        ('unlabeled_batch_size', 0), 
+        ('unlabeled_batch_size', 2), 
 
     ]
 )

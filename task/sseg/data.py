@@ -17,6 +17,12 @@ import pixelssl
 
 def add_parser_arguments(parser):
     pixelssl.data_template.add_parser_arguments(parser)
+    parser.add_argument('--val-rescaling', type=pixelssl.str2bool, default=False, 
+                        help='sseg - if true, the short edge of the outputs is scaled ' 
+                             'to the size of the inputs, and the long edge is scaled by '
+                             'using the same ratio')
+    parser.add_argument('--train-base-size', type=int, default=400, 
+                        help='sseg - base size of random image cropping during training')
 
 
 def pascal_voc_aug():
@@ -87,9 +93,9 @@ class PascalVocDataset(pixelssl.data_template.TaskDataset):
         else:
             sample = {self.IMAGE: image, self.LABEL: label}
         composed_transforms = transforms.Compose([
+            RandomScaleCrop(base_size=self.args.train_base_size, crop_size=self.args.im_size),
             RandomHorizontalFlip(),
-            RandomScaleCrop(base_size=self.args.im_size, crop_size=self.args.im_size),
-            RandomGaussianBlur(),
+            # RandomGaussianBlur(),
             Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
             ToTensor()])
 
@@ -102,13 +108,18 @@ class PascalVocDataset(pixelssl.data_template.TaskDataset):
 
     def _val_prehandle(self, image, label):
         sample = {self.IMAGE: image, self.LABEL: label}
-        composed_transforms = transforms.Compose([
-            FixedSizeScale(size=self.args.im_size),
-            Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-            ToTensor()])
+
+        if self.args.val_rescaling:
+            composed_transforms = transforms.Compose([
+                FixedScaleResize(size=self.args.im_size),
+                Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                ToTensor()])
+        else:
+            composed_transforms = transforms.Compose([
+                Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                ToTensor()])
 
         transformed_sample = composed_transforms(sample)
-
         return transformed_sample[self.IMAGE], transformed_sample[self.LABEL]
 
 
@@ -245,7 +256,7 @@ class RandomScaleCrop(object):
         return {'image': img, 'label': mask}
 
 
-class FixedSizeScale(object):
+class FixedScaleResize(object):
     def __init__(self, size):
         self.size = size
     

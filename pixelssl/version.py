@@ -1,4 +1,4 @@
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 __name__ = 'pixelssl'
 __description__ = 'A PyTorch-based Semi-Supervised Learning Codebase for Pixel-wise Vision Tasks'
@@ -12,6 +12,7 @@ __author__ = 'PixelSSL Contributors {0}'.format(
 __author_email__ = 'kezhanghan@outlook.com'
 
 __updates__ = {
+    '0.1.2': 'supports PSPNet and its SSL results for semantic segmentation task',
     '0.1.1': 'supports a new semi-supervised learning algorihms (S4L) and fixes some bugs in the demo code of semantic segmentation task',
     '0.1.0': 'supports supervised-only learning, three semi-supervised learning algorithms (MT, AdvSSL, GCT) and one example task (semantic segmentation)',
 }

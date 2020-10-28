@@ -15,10 +15,12 @@ As a result, the SSL algorithms integrated in PixelSSL are compatible with all t
 <!-- This project includes the code of our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) (GCT). -->
 
 ## News
+- **[Oct 28 2020] PixelSSL v0.1.2 is Released!**  
+  v0.1.2 supports [PSPNet](https://arxiv.org/abs/1612.01105) and its SSL results for semantic segmentation task [check [here](task/sseg)].
+  
 - **[Sep 16 2020] PixelSSL v0.1.1 is Released!**  
   v0.1.1 supports a new semi-supervised learning algorihms ([S4L](https://arxiv.org/abs/1905.03670)) and fixes some bugs in the demo code of semantic segmentation task.
   
-
 - **[Aug 13 2020] PixelSSL v0.1.0 is Released!**  
   v0.1.0 supports supervised-only learning, three semi-supervised learning algorithms 
   ([MT](https://arxiv.org/abs/1703.01780), 
@@ -35,19 +37,23 @@ The SSL algorithms and demo tasks supported by PixelSSL are summarized in the fo
 | Algorithms / Tasks | [Segmentation](task/sseg) | Other Tasks | 
 | :---: | :---: | :---: |
 | SupOnly | v0.1.0 | Coming Soon |
-| [MT](https://arxiv.org/abs/1703.01780) [1] | v0.1.0 | Coming Soon |
-| [S4L](https://arxiv.org/abs/1905.03670) [2] | v0.1.1 | Coming Soon | 
-| [AdvSSL](https://arxiv.org/abs/1802.07934) [3] | v0.1.0 | Coming Soon |
-| [GCT](https://arxiv.org/abs/2008.05258) [4] | v0.1.0 | Coming Soon |
+| MT [[1]](https://arxiv.org/abs/1703.01780) | v0.1.0 | Coming Soon |
+| AdvSSL [[2]](https://arxiv.org/abs/1802.07934) | v0.1.0 | Coming Soon |
+| S4L [[3]](https://arxiv.org/abs/1905.03670) | v0.1.1 | Coming Soon | 
+| GCT [[4]](https://arxiv.org/abs/2008.05258) | v0.1.0 | Coming Soon |
 
 
-[1] Tarvainen, A., Valpola, H.: Mean Teachers are Better Role Models: Weight-Averaged
-Consistency Targets Improve Semi-Supervised Deep Learning Results. In: NeurIPS
-(2017)  
-[2] Zhai, X., Oliver, A., Kolesnikov, A., Beyer, L.: S4L: Self-Supervised Semi-Supervised Learning. In: ICCV (2019)  
-[3] Hung, W.C., Tsai, Y.H., Liou, Y.T., Lin, Y.Y., Yang, M.H.: Adversarial Learning
-for Semi-Supervised Semantic Segmentation. In: BMVC (2018)  
-[4] Ke, Z., Qiu, D., Li, K., Yan, Q., Lau, R.W.: Guided Collaborative Training for Pixel-wise Semi-Supervised Learning. In: ECCV (2020)
+[1] Mean Teachers are Better Role Models: Weight-Averaged Consistency Targets Improve Semi-Supervised Deep Learning Results  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Antti Tarvainen, and Harri Valpola. NeurIPS 2017.
+
+[3] Adversarial Learning for Semi-Supervised Semantic Segmentation  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Wei-Chih Hung, Yi-Hsuan Tsai, Yan-Ting Liou, Yen-Yu Lin, and Ming-Hsuan Yang. BMVC 2018.  
+
+[3] S4L: Self-Supervised Semi-Supervised Learning  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Xiaohua Zhai, Avital Oliver, Alexander Kolesnikov, and Lucas Beyer. ICCV 2019.  
+
+[4] Guided Collaborative Training for Pixel-wise Semi-Supervised Learning  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zhanghan Ke, Di Qiu, Kaican Li, Qiong Yan, and Rynson W.H. Lau. ECCV 2020.
 
 
 ## Installation
