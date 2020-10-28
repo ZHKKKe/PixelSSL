@@ -41,7 +41,7 @@ def add_parser_arguments(parser):
     parser.add_argument('--ad-lr-scale', type=float, default=-1, help='learning rate scale for auxilary decoders')
 
     # TODO
-    parser.add_argument('--ad-in-channels', type=int, default=2048, help='')
+    parser.add_argument('--ad-in-channels', type=int, default=512, help='')
     parser.add_argument('--ad-out-channels', type=int, default=21, help='')
     parser.add_argument('--ad-upscale', type=int, default=8, help='')
 
@@ -49,20 +49,20 @@ def add_parser_arguments(parser):
     parser.add_argument('--vat_dec_xi', type=float, default=1e-6, help='')
     parser.add_argument('--vat_dec_eps', type=float, default=2.0, help='')
 
-    parser.add_argument('--drop_dec_num', type=int, default=6, help='')
+    parser.add_argument('--drop_dec_num', type=int, default=4, help='')
     parser.add_argument('--drop_dec_rate', type=float, default=0.5, help='')
     parser.add_argument('--drop_dec_spatial', type=cmd.str2bool, default=True, help='')
 
-    parser.add_argument('--cut_dec_num', type=int, default=6, help='')
+    parser.add_argument('--cut_dec_num', type=int, default=4, help='')
     parser.add_argument('--cut_dec_erase', type=float, default=0.4, help='')
 
     parser.add_argument('--context-dec-num', type=int, default=2, help='')
 
     parser.add_argument('--object-dec-num', type=int, default=2, help='')
 
-    parser.add_argument('--fd-dec-num', type=int, default=6, help='')
+    parser.add_argument('--fd-dec-num', type=int, default=4, help='')
 
-    parser.add_argument('--fn-dec-num', type=int, default=6, help='')
+    parser.add_argument('--fn-dec-num', type=int, default=4, help='')
     parser.add_argument('--fn-dec-uniform', type=float, default=0.3, help='')
 
 

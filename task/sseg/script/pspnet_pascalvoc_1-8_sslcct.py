@@ -20,12 +20,12 @@ config = collections.OrderedDict(
         # arguments - SSL algorithm
         ('ssl_algorithm', pixelssl.SSL_CCT),
 
-        ('cons_scale', 10.0),
-        ('cons_rampup_epochs', 2),
+        ('cons_scale', 30.0),
+        ('cons_rampup_epochs', 5),
         ('ad_lr_scale', 10.0),
 
         # arguments - exp
-        # ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_sslcct.ckpt'),
+        # ('resume', ''),
         # ('validation', True),
         
         ('out_path', 'result'),
@@ -36,23 +36,23 @@ config = collections.OrderedDict(
         ('val_freq', 1),
         ('log_freq', 50),
         ('visual_freq', 50),
-        ('checkpoint_freq', 10),
+        ('checkpoint_freq', 5),
 
         # arguments - dataset / dataloader
         ('trainset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('valset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('num_workers', 2),
-        ('im_size', 321),
+        ('im_size', 513),
 
         ('sublabeled_path', 'dataset/PascalVOC/sublabeled_prefix/1-8/0.txt'),
         ('ignore_unlabeled', False),
 
         # arguments - task specific components
-        ('models', {'model': 'deeplabv2'}),
+        ('models', {'model': 'pspnet'}),
         ('optimizers', {'model': 'sgd'}),
         ('lrers', {'model': 'polynomiallr'}),
         ('criterions', {'model': 'sseg_criterion'}),
-
+        
         # arguments - task specific optimizer / lr scheduler
         ('lr', 0.00025),
         ('momentum', 0.9),
@@ -60,10 +60,14 @@ config = collections.OrderedDict(
 
         # arguments - task special model
         ('output_stride', 16),
-        ('backbone', 'resnet'),
+        ('backbone', 'resnet101-coco'),
+
+        # arguments - task special data
+        ('val_rescaling', False),
+        ('train_base_size', 513),
 
         # arguments - training details
-        ('epochs', 20),
+        ('epochs', 45),
         ('batch_size', 4),
         ('unlabeled_batch_size', 2), 
 

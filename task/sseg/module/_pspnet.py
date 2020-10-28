@@ -121,11 +121,11 @@ class _PSPNet(nn.Module):
 
     def forward(self, input):
         bx = self.backbone(input)
-        x = self.psp(bx)
-        x = self.decoder(x)
+        px = self.psp(bx)
+        x = self.decoder(px)
 
         x = F.interpolate(x, size=input.size()[2:], mode='bilinear', align_corners=True)
-        return x, bx
+        return x, px
 
     def freeze_bn(self):
         for m in self.modules():
