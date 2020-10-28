@@ -52,7 +52,7 @@ config = collections.OrderedDict(
         ('models', {'model': 'deeplabv2'}),
         ('optimizers', {'model': 'sgd'}),
         ('lrers', {'model': 'polynomiallr'}),
-        ('criterions', {'model': 'deeplab_criterion'}),
+        ('criterions', {'model': 'sseg_criterion'}),
 
         # arguments - task specific optimizer / lr scheduler
         ('lr', 0.00025),
@@ -61,7 +61,11 @@ config = collections.OrderedDict(
 
         # arguments - task special model
         ('output_stride', 16),
-        ('backbone', 'resnet'),
+        ('backbone', 'resnet101-coco'),
+
+        # arguments - task special data
+        ('val_rescaling', True),
+        ('train_base_size', 400),
 
         # arguments - training details
         ('epochs', 20),

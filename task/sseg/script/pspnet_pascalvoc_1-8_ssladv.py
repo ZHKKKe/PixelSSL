@@ -18,10 +18,17 @@ config = collections.OrderedDict(
         ('exp_id', os.path.basename(__file__).split(".")[0]),
         
         # arguments - SSL algorithm
-        ('ssl_algorithm', pixelssl.SSL_NULL),
+        ('ssl_algorithm', pixelssl.SSL_ADV),
+
+        ('adv_for_labeled', True),
+        ('labeled_adv_scale', 0.001),
+        ('unlabeled_adv_scale', 0.0001),
+
+        ('discriminator_lr', 0.0001),
+        ('unlabeled_for_discriminator', True),
 
         # arguments - exp
-        ('resume', 'pretrained/deeplabv2_pascalvoc_1-8_suponly.ckpt'),
+        ('resume', 'pretrained/pspnet_pascalvoc_1-8_ssladv.ckpt'),
         ('validation', True),
         
         ('out_path', 'result'),
@@ -32,19 +39,19 @@ config = collections.OrderedDict(
         ('val_freq', 1),
         ('log_freq', 50),
         ('visual_freq', 50),
-        ('checkpoint_freq', 10),
+        ('checkpoint_freq', 5),
 
         # arguments - dataset / dataloader
         ('trainset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('valset', {'pascal_voc_aug': ['dataset/PascalVOC/VOCdevkit/VOC2012']}),
         ('num_workers', 2),
-        ('im_size', 321),
+        ('im_size', 513),
 
         ('sublabeled_path', 'dataset/PascalVOC/sublabeled_prefix/1-8/0.txt'),
-        ('ignore_unlabeled', True),
+        ('ignore_unlabeled', False),
 
         # arguments - task specific components
-        ('models', {'model': 'deeplabv2'}),
+        ('models', {'model': 'pspnet'}),
         ('optimizers', {'model': 'sgd'}),
         ('lrers', {'model': 'polynomiallr'}),
         ('criterions', {'model': 'sseg_criterion'}),
@@ -59,13 +66,13 @@ config = collections.OrderedDict(
         ('backbone', 'resnet101-coco'),
 
         # arguments - task special data
-        ('val_rescaling', True),
-        ('train_base_size', 400),
+        ('val_rescaling', False),
+        ('train_base_size', 513),
 
         # arguments - training details
-        ('epochs', 40),
+        ('epochs', 45),
         ('batch_size', 4),
-        ('unlabeled_batch_size', 0), 
+        ('unlabeled_batch_size', 2), 
 
     ]
 )
