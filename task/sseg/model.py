@@ -76,7 +76,7 @@ class DeepLabV2(DeepLab):
             pretrained_backbone_url = 'http://vllab1.ucmerced.edu/~whung/adv-semi-seg/resnet101COCO-41f33a49.pth'
         else:
             pixelssl.log_err('DeepLabV2 does not support the backbone: {0}\n'
-                             'You can support it for PSPNet in the file \'task/sseg/model.py\'\n')
+                             'You can support it for DeepLabV2 in the file \'task/sseg/model.py\'\n'.format(args.backbone))
 
         super(DeepLabV2, self).__init__(args, 'v2', pretrained_backbone_url)
 
@@ -93,7 +93,7 @@ class PSPNet(pixelssl.model_template.TaskModel):
             self.pretrained_backbone_url = 'http://vllab1.ucmerced.edu/~whung/adv-semi-seg/resnet101COCO-41f33a49.pth'
         else:
             pixelssl.log_err('PSPNet does not support the backbone: {0}\n'
-                             'You can support it for PSPNet in the file \'task/sseg/model.py\'\n')
+                             'You can support it for PSPNet in the file \'task/sseg/model.py\'\n'.format(args.backbone))
 
         self.model = _pspnet._PSPNet(backbone=self.args.backbone,
             output_stride=self.args.output_stride, num_classes=self.args.num_classes,

@@ -19,52 +19,50 @@ from pixelssl.nn.module import patch_replication_callback
 from . import ssl_base
 
 
-""" Implementation of the CCT algorithm for SSL
+""" Implementation of the CCT algorithm for pixel-wise SSL
 
-This method is proposed in paper:
+This method is proposed in the paper:
     'Semi-Supervised Semantic Segmentation with Cross-Consistency Training' 
 
-This implementation follows the official code from: https://github.com/yassouali/CCT
-Since the code of the auxilary decoders are adapted from the aforementioned repository, 
-they may only suitable for semantic segmentation. For  consistency constraint calculation, 
-this code supports both sigmoid ramp-up scale function and MSE loss, which are suitable for 
-most tasks.
+This implementation tries to follow the code from: https://github.com/yassouali/CCT
+Since the code of the auxiliary decoders are adapted from above repository, they may 
+be only suitable for pixel-wise classification. 
+For the semantic segmentation task, we only experimented with CCT under PSPNet.
+
+This implementation supports:
+    RAMP-UP TYPES: sigmoid ramp-up function
+    LOSS TYPES: MSE loss
+for calculating the consistency constraint.
 """
 
 
 def add_parser_arguments(parser):
     ssl_base.add_parser_arguments(parser)
 
-    parser.add_argument('--cons-scale', type=float, default=-1, help='consistency constraint coefficient')
-    parser.add_argument('--cons-rampup-epochs', type=int, default=-1, help='ramp-up epochs of conistency constraint')
+    parser.add_argument('--cons-scale', type=float, default=-1, help='sslcct - consistency constraint coefficient')
+    parser.add_argument('--cons-rampup-epochs', type=int, default=-1, help='sslcct - ramp-up epochs of conistency constraint')
     
-    parser.add_argument('--ad-lr-scale', type=float, default=-1, help='learning rate scale for auxilary decoders')
+    parser.add_argument('--ad-lr-scale', type=float, default=-1, help='sslcct - learning rate scale for auxiliary decoders')
 
-    # TODO
-    parser.add_argument('--ad-in-channels', type=int, default=512, help='')
-    parser.add_argument('--ad-out-channels', type=int, default=21, help='')
-    parser.add_argument('--ad-upscale', type=int, default=8, help='')
+    parser.add_argument('--vat-dec-num', type=int, default=0, help='sslcct - number of the \'I-VAT\' auxiliary decoders')
+    parser.add_argument('--vat-dec-xi', type=float, default=1e-6, help='sslcct - the argument \'xi\' for \'I-VAT\' auxiliary decoders')
+    parser.add_argument('--vat-dec-eps', type=float, default=2.0, help='sslcct - the argument \'eps\' for \'I-VAT\' auxiliary decoders')
 
-    parser.add_argument('--vat_dec_num', type=int, default=2, help='')
-    parser.add_argument('--vat_dec_xi', type=float, default=1e-6, help='')
-    parser.add_argument('--vat_dec_eps', type=float, default=2.0, help='')
+    parser.add_argument('--drop-dec-num', type=int, default=0, help='sslcct - number of the \'DropOut\' auxiliary decoders')
+    parser.add_argument('--drop-dec-rate', type=float, default=0.5, help='sslcct - the argument \'rate\' for \'DropOut\' auxiliary decoders')
+    parser.add_argument('--drop-dec-spatial', type=cmd.str2bool, default=True, help='sslcct - the argument \'spatial\' for \'DropOut\' auxiliary decoders')
 
-    parser.add_argument('--drop_dec_num', type=int, default=4, help='')
-    parser.add_argument('--drop_dec_rate', type=float, default=0.5, help='')
-    parser.add_argument('--drop_dec_spatial', type=cmd.str2bool, default=True, help='')
+    parser.add_argument('--cut-dec-num', type=int, default=0, help='sslcct - number of the \'G-Cutout\' auxiliary decoders')
+    parser.add_argument('--cut-dec-erase', type=float, default=0.4, help='sslcct - the argument \'erase\' for \'G-Cutout\' auxiliary decoders')
 
-    parser.add_argument('--cut_dec_num', type=int, default=4, help='')
-    parser.add_argument('--cut_dec_erase', type=float, default=0.4, help='')
+    parser.add_argument('--context-dec-num', type=int, default=0, help='sslcct - number of the \'Con-Msk\' auxiliary decoders')
 
-    parser.add_argument('--context-dec-num', type=int, default=2, help='')
+    parser.add_argument('--object-dec-num', type=int, default=0, help='sslcct - number of the \'Obj-Msk\' auxiliary decoders')
 
-    parser.add_argument('--object-dec-num', type=int, default=2, help='')
+    parser.add_argument('--fn-dec-num', type=int, default=0, help='sslcct - number of the \'F-Noise\' auxiliary decoders')
+    parser.add_argument('--fn-dec-uniform', type=float, default=0.3, help='sslcct - the argument \'uniform\' for \'F-Noise\' auxiliary decoders')
 
-    parser.add_argument('--fd-dec-num', type=int, default=4, help='')
-
-    parser.add_argument('--fn-dec-num', type=int, default=4, help='')
-    parser.add_argument('--fn-dec-uniform', type=float, default=0.3, help='')
-
+    parser.add_argument('--fd-dec-num', type=int, default=0, help='sslcct - number of the \'F-Drop\' auxiliary decoders')
 
 def ssl_cct(args, model_dict, optimizer_dict, lrer_dict, criterion_dict, task_func):
     if not len(model_dict) == len(optimizer_dict) == len(lrer_dict) == len(criterion_dict) == 1:
@@ -92,7 +90,7 @@ class SSLCCT(ssl_base._SSLBase):
         super(SSLCCT, self).__init__(args)
 
         self.main_model = None
-        self.auxilary_decoders = None
+        self.auxiliary_decoders = None
 
         self.model = None
         self.optimizer = None
@@ -118,8 +116,6 @@ class SSLCCT(ssl_base._SSLBase):
         else:
             self.args.ad_lr_scale = 0
 
-        # TODO: check arguments for the auxilary decoders
-
     def _build(self, model_funcs, optimizer_funcs, lrer_funcs, criterion_funcs, task_func):
         self.task_func = task_func
 
@@ -132,43 +128,78 @@ class SSLCCT(ssl_base._SSLBase):
         # create the main task model
         self.main_model = func.create_model(model_funcs[0], 'main_model', args=self.args).module
         
-        # create the auxilary decoders
+        # create the auxiliary decoders
         vat_decoders = [
-            VATDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels, xi=self.args.vat_dec_xi, eps=self.args.vat_dec_eps) \
-                for _ in range(0, self.args.vat_dec_num)
+            VATDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels(), 
+                xi=self.args.vat_dec_xi, 
+                eps=self.args.vat_dec_eps
+            ) for _ in range(0, self.args.vat_dec_num)
         ]
         drop_decoders = [
-            DropOutDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels, drop_rate=self.args.drop_dec_rate, spatial_dropout=self.args.drop_dec_spatial) \
-                for _ in range(0, self.args.drop_dec_num)
+            DropOutDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels(), 
+                drop_rate=self.args.drop_dec_rate, 
+                spatial_dropout=self.args.drop_dec_spatial
+            ) for _ in range(0, self.args.drop_dec_num)
         ]
         cut_decoders = [
-            CutOutDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels, erase=self.args.cut_dec_erase) \
-                for _ in range(0, self.args.cut_dec_num)
+            CutOutDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels(), 
+                erase=self.args.cut_dec_erase
+            ) for _ in range(0, self.args.cut_dec_num)
         ]
         context_decoders = [
-            ContextMaskingDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels) \
-                for _ in range(0, self.args.context_dec_num)
+            ContextMaskingDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels()
+            ) for _ in range(0, self.args.context_dec_num)
         ]
         object_decoders = [
-            ObjectMaskingDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels) \
-                for _ in range(0, self.args.object_dec_num)
+            ObjectMaskingDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels()
+            ) for _ in range(0, self.args.object_dec_num)
         ]
         feature_drop_decoders = [
-            FeatureDropDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels) \
-                for _ in range(0, self.args.fd_dec_num)
+            FeatureDropDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels()
+            ) for _ in range(0, self.args.fd_dec_num)
         ]
         feature_noise_decoders = [
-            FeatureNoiseDecoder(self.args.ad_upscale, self.args.ad_in_channels, self.args.ad_out_channels, uniform_range=self.args.fn_dec_uniform) \
-                for _ in range(0, self.args.fn_dec_num)
+            FeatureNoiseDecoder(
+                self.task_func.sslcct_ad_upsample_scale(), 
+                self.task_func.sslcct_ad_in_channels(), 
+                self.task_func.sslcct_ad_out_channels(), 
+                uniform_range=self.args.fn_dec_uniform
+            ) for _ in range(0, self.args.fn_dec_num)
         ]
 
-        self.auxilary_decoders = nn.ModuleList(
-            [*vat_decoders, *drop_decoders, *cut_decoders, *context_decoders, *object_decoders, *feature_drop_decoders, *feature_noise_decoders]
+        self.auxiliary_decoders = nn.ModuleList(
+            [
+                *vat_decoders, 
+                *drop_decoders, 
+                *cut_decoders, 
+                *context_decoders, 
+                *object_decoders, 
+                *feature_drop_decoders, 
+                *feature_noise_decoders,
+            ]
         )
 
-        # wrap 'self.main_model' and 'self.auxilary decoders' into a single model
+        # wrap 'self.main_model' and 'self.auxiliary decoders' into a single model
         # NOTE: all criterions are wrapped into the model to save the memory of the main GPU
-        self.model = WrappedCCTModel(self.args, self.main_model, self.auxilary_decoders, 
+        self.model = WrappedCCTModel(self.args, self.main_model, self.auxiliary_decoders, 
                                      self.criterion, self.cons_criterion, self.task_func.sslcct_activate_ad_preds)
         self.model = nn.DataParallel(self.model).cuda()
         # call 'patch_replication_callback' to use the `sync_batchnorm` layer
@@ -344,7 +375,7 @@ class SSLCCT(ssl_base._SSLBase):
         self.lrer.load_state_dict(checkpoint['lrer'])
 
         self.main_model = self.model.module.main_model
-        self.auxilary_decoders = self.model.module.auxilary_decoders
+        self.auxiliary_decoders = self.model.module.auxiliary_decoders
 
         return checkpoint['epoch']
 
@@ -374,24 +405,34 @@ class SSLCCT(ssl_base._SSLBase):
         return inp, gt
 
     def _data_err(self):
-        pass
+        logger.log_warn('More than one ground truth of the task model is given in SSL_CCT\n'
+                        'Currently, this implementation of CCT algorithm supports only one (pred & gt) pairs\n'
+                        'Please implement a new SSL algorithm if you want a variant of SSL_CCT that\n' 
+                        'supports more than one (pred & gt) pairs\n')
 
     def _algorithm_warn(self):
-        pass
+        logger.log_warn('This SSL_CCT algorithm reproducts the SSL algorithm from paper:\n'
+                        '  \'Semi-Supervised Semantic Segmentation with Cross-Consistency Training\'\n'
+                        'The code of the auxiliary decoders are adapted from the official repository:\n'
+                        '   https://github.com/yassouali/CCT \n'
+                        'These auxiliary decoders may only suitable for pixel-wise classification\n'
+                        'Hence, this implementation does not currently support pixel-wise regression tasks\n'
+                        'Besides, the auxiliary decoders will use huge GPU memory\n'
+                        'Please reduce the number of the auxiliary decoders if you run out of GPU memory\n')
 
 
 class WrappedCCTModel(nn.Module):
-    def __init__(self, args, main_model, auxilary_decoders, task_criterion, cons_criterion, ad_activation_func):
+    def __init__(self, args, main_model, auxiliary_decoders, task_criterion, cons_criterion, ad_activation_func):
         super(WrappedCCTModel, self).__init__()
         self.args = args
         self.main_model = main_model
-        self.auxilary_decoders = auxilary_decoders
+        self.auxiliary_decoders = auxiliary_decoders
         self.task_criterion = task_criterion
         self.cons_criterion = cons_criterion
         self.ad_activation_func = ad_activation_func
 
         self.param_groups = self.main_model.param_groups + \
-            [{'params': self.auxilary_decoders.parameters(), 'lr': self.args.lr * self.args.ad_lr_scale}]
+            [{'params': self.auxiliary_decoders.parameters(), 'lr': self.args.lr * self.args.ad_lr_scale}]
 
     def forward(self, inp, gt, is_unlabeled):
         resulter, debugger = {}, {}
@@ -420,17 +461,17 @@ class WrappedCCTModel(nn.Module):
         if is_unlabeled and self.args.unlabeled_batch_size > 0:
             if not 'sslcct_ad_inp' in m_resulter.keys():
                 logger.log_err('In SSL_CCT, the \'resulter\' dict returned by the task model should contain the key:\n'
-                            '    \'sslcct_ad_inp\'\t=>\tinputs of the auxilary_decoders (a 4-dim tensor)\n'
-                            'It is the feature map encoded by the task model\n'
-                            'Please add the key \'sslcct_ad_inp\' in your task model\'s resulter\n'
-                            'Note that for different task models, the shape of \'sslcct_ad_inp\' may be different\n')
+                               '    \'sslcct_ad_inp\'\t=>\tinputs of the auxiliary decoders (a 4-dim tensor)\n'
+                               'It is the feature map encoded by the task model\n'
+                               'Please add the key \'sslcct_ad_inp\' in your task model\'s resulter\n'
+                               'Note that for different task models, the shape of \'sslcct_ad_inp\' may be different\n')
 
             ul_ad_inp = tool.dict_value(m_resulter, 'sslcct_ad_inp')
             ul_main_pred = resulter['pred'][0].detach()
 
-            # forward the auxilary decoders
+            # forward the auxiliary decoders
             ul_ad_preds = []
-            for ad in self.auxilary_decoders:
+            for ad in self.auxiliary_decoders:
                 ul_ad_preds.append(ad.forward(ul_ad_inp, pred_of_main_decoder=ul_main_pred))
 
             resulter['ul_ad_preds'] = ul_ad_preds
@@ -454,7 +495,7 @@ class WrappedCCTModel(nn.Module):
 #   https://github.com/yassouali/CCT 
 # =======================================================
 
-# Archtectures of the Auxilary Decoders
+# Archtectures of the Auxiliary Decoders
 
 class PixelShuffle(nn.Module):
     """

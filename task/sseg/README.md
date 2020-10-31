@@ -18,12 +18,14 @@ The supported task model is [PSPNet]() with the [ResNet-101](https://arxiv.org/a
 | SSL/Labels | 1/16 labels | 1/8 labels | 1/4 labels | 1/2 labels | full labels | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | SupOnly | 61.90 | [67.06](https://drive.google.com/file/d/1CyrmM0AxMvYoY-YatmLFQf_j_Afi2bCS/view?usp=sharing) | 69.78 | 72.89 | [75.25](https://drive.google.com/file/d/1AGimIbPCT-Cv6ONx0WcrfCV9ONVKSZlt/view?usp=sharing) |
-| [MT](https://arxiv.org/abs/1703.01780) | - | [68.86](https://drive.google.com/file/d/1D30Ehvu3hzIoDCvbF9n0Wcba4QLe-MC-/view?usp=sharing) | - | - | - | 
-| [S4L](https://arxiv.org/abs/1905.03670) | - | - | - | - | - |
-| [AdvSSL](https://arxiv.org/abs/1802.07934) | - | [68.39](https://drive.google.com/file/d/1GyneqnoT3QOFdNT4tvoILv2A24k9LQba/view?usp=sharing) | - | - | - |
-| [GCT](https://arxiv.org/abs/2008.05258) | - | - | - | - | - |  
+| [MT](https://arxiv.org/abs/1703.01780) | 62.78 | [68.86](https://drive.google.com/file/d/1D30Ehvu3hzIoDCvbF9n0Wcba4QLe-MC-/view?usp=sharing) | - | - | - | 
+| [AdvSSL](https://arxiv.org/abs/1802.07934) | 63.04 | [68.39](https://drive.google.com/file/d/1GyneqnoT3QOFdNT4tvoILv2A24k9LQba/view?usp=sharing) | - | - | - |
+| [CCT](https://arxiv.org/abs/2003.09005) | 64.58 | [70.45](https://drive.google.com/file/d/1a7rTr5Azvchx0mgPbonRpqSIiGN-yCeL/view?usp=sharing) | - | - | - |  
+| [GCT](https://arxiv.org/abs/2008.05258) | 64.36 | [70.57]() | - | - | - |  
 
-**NOTE**: With more training epochs, the results of SSL experiments in the above table may be better.
+**NOTE**: 
+- For the SupOnly experiments, the training epochs under all settings is 80. For the SSL experiments, the training epochs of 1/16, 1/8, 1/4, 1/2 and full labels are 45, 45, 55, 80 and 80, respectively.
+- With more training epochs, the results of SSL experiments may be better.
 
 ### DeepLabV2
 The supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with the [ResNet-101](https://arxiv.org/abs/1512.03385) backbone, which is pretrained by the [ImageNet](http://www.image-net.org/) dataset and the [COCO](https://cocodataset.org/#home) dataset. The **MSC** and **CRF** tricks used in the original [DeepLab-v2](https://arxiv.org/abs/1606.00915) paper are closed to save run-time memory. During the validation, the short edge of the input image is scaled to the training input size (here is 321). The main experimental results are as follows:
@@ -36,7 +38,10 @@ The supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with 
 | [AdvSSL](https://arxiv.org/abs/1802.07934) | 62.61 | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 69.94 | 72.10 | 74.15 |
 | [GCT](https://arxiv.org/abs/2008.05258) | 65.18 | [70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | 71.53 | 72.45 | 74.06 |  
 
-**NOTE**: The mIoU in the above table are lower than the results reported in the [GCT](https://arxiv.org/abs/2008.05258) paper. The higher mIoU in the paper comes from a `CenterCrop` operation that shouldn't have during the validation. The bug has been fixed in [this commit](https://github.com/ZHKKKe/PixelSSL/commit/b655e514ec2917adf3210a5c4f1e362b8d446f51). Since all models' performance is almost equally degraded, this bug does not affect the conclusions about semi-supervised learning.
+**NOTE**: 
+- The mIoU in the above table are lower than the results reported in the [GCT](https://arxiv.org/abs/2008.05258) paper. The higher mIoU in the paper comes from a `CenterCrop` operation that shouldn't have during the validation. The bug has been fixed in [this commit](https://github.com/ZHKKKe/PixelSSL/commit/b655e514ec2917adf3210a5c4f1e362b8d446f51). Since all models' performance is almost equally degraded, this bug does not affect the conclusions about semi-supervised learning.
+
+- For the SupOnly experiments, the training epochs under all settings is 40. For the SSL experiments, the training epochs of 1/16, 1/8, 1/4, 1/2 and full labels are 20, 20, 30, 40 and 40, respectively.
 
 <br>
 

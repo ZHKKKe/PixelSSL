@@ -19,7 +19,7 @@ from . import ssl_base
 
 """ Implementation of pixel-wise Mean Teacher (MT)
     
-This method is proposed in paper: 
+This method is proposed in the paper: 
     'Mean Teachers are Better Role Models:
         Weight-Averaged Consistency Targets Improve Semi-Supervised Deep Learning Results'
 
@@ -30,12 +30,12 @@ outputs trick is not available.
 
 def add_parser_arguments(parser):
     ssl_base.add_parser_arguments(parser)
-    parser.add_argument('--cons-for-labeled', type=cmd.str2bool, default=True, help='calculate the consistency constraint on the labeled data if True')
-    parser.add_argument('--cons-scale', type=float, default=-1, help='consistency constraint coefficient')
-    parser.add_argument('--cons-rampup-epochs', type=int, default=-1, help='ramp-up epochs of conistency constraint')
+    parser.add_argument('--cons-for-labeled', type=cmd.str2bool, default=True, help='sslmt - calculate the consistency constraint on the labeled data if True')
+    parser.add_argument('--cons-scale', type=float, default=-1, help='sslmt - consistency constraint coefficient')
+    parser.add_argument('--cons-rampup-epochs', type=int, default=-1, help='sslmt - ramp-up epochs of conistency constraint')
 
-    parser.add_argument('--ema-decay', type=float, default=0.999, help='EMA coefficient of teacher model')
-    parser.add_argument('--gaussian-noise-std', type=float, default=None, help='std of input gaussian noise (set to None to disable it)')
+    parser.add_argument('--ema-decay', type=float, default=0.999, help='sslmt - EMA coefficient of teacher model')
+    parser.add_argument('--gaussian-noise-std', type=float, default=None, help='sslmt - std of input gaussian noise (set to None to disable it)')
 
 
 def ssl_mt(args, model_dict, optimizer_dict, lrer_dict, criterion_dict, task_func):

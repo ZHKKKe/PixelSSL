@@ -218,4 +218,44 @@ class TaskFunc:
 
         raise NotImplementedError
 
+    def sslcct_ad_in_channels(self):
+        """ Define the input channels of the auxilary decoders used in SSL_CCT.
+
+            Since different tasks use different model architectures, the input channel of the auxilary 
+            decoders should be changed. Usually, we use the feature map encoded by the task model as 
+            the input of the auxilary decoders.
+
+            Returns:
+                int: input channels of the auxilary decoders used in SSL_CCT
+        """
+
+        raise NotImplementedError
+
+    def sslcct_ad_out_channels(self):
+        """ Define the output channels of the auxilary decoders used in SSL_CCT.
+
+            Since different tasks have different output format, the out channel of the auxilary 
+            decoders should be changed. Usually, the outputs of the auxilary decoders have the 
+            same format with the task prediction. 
+
+            Returns:
+                int: output channels of the auxilary decoders used in SSL_CCT
+        """
+
+        raise NotImplementedError
+
+    def sslcct_ad_upsample_scale(self):
+        """ Define the upsample of the auxilary decoders used in SSL_CCT.
+
+            The auxiliary decoder in SSL_CCT use the low-resolution latent features of the task 
+            model as input. As different task models have different downsampling ratios, we need 
+            to specify different upsampling ratios for the auxiliary decoders to restore the 
+            high-resolution output.
+
+            Returns:
+                int: upsampling scale of the auxilary decoders used in SSL_CCT
+        """
+
+        raise NotImplementedError
+
     # ---------------------------------------------------------------------

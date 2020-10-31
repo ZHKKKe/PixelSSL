@@ -24,9 +24,17 @@ config = collections.OrderedDict(
         ('cons_rampup_epochs', 5),
         ('ad_lr_scale', 10.0),
 
+        ('vat_dec_num', 1),
+        ('drop_dec_num', 2),
+        ('cut_dec_num', 2),
+        ('context_dec_num', 1),
+        ('object_dec_num', 1),
+        ('fd_dec_num', 2),
+        ('fn_dec_num', 2),
+
         # arguments - exp
-        # ('resume', ''),
-        # ('validation', True),
+        ('resume', 'pretrained/pspnet_pascalvoc_1-8_sslcct.ckpt'),
+        ('validation', True),
         
         ('out_path', 'result'),
         

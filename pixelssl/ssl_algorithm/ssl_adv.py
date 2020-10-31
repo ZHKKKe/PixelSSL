@@ -18,7 +18,7 @@ from . import ssl_base
 
 """ Implementation of pixel-wise adversarial-based semi-supervised learning (AdvSSL)
     
-This method is proposed in paper: 
+This method is proposed in the paper: 
     'Adversarial Learning for Semi-supervised Semantic Segmentation'
 
 This implementation does not support the constraint named \'L_semi\' in the original paper 
@@ -28,14 +28,14 @@ because it can only be used for pixel-wise classification.
 
 def add_parser_arguments(parser):
     ssl_base.add_parser_arguments(parser)
-    parser.add_argument('--adv-for-labeled', type=cmd.str2bool, default=False, help='calculate the adversarial constraint on the labeled data if True')
-    parser.add_argument('--labeled-adv-scale', type=float, default=-1, help='adversarial constraint coefficient of labeled data')
-    parser.add_argument('--unlabeled-adv-scale', type=float, default=-1, help='adversarial constraint coefficient of unlabeled data')
+    parser.add_argument('--adv-for-labeled', type=cmd.str2bool, default=False, help='ssladv - calculate the adversarial constraint on the labeled data if True')
+    parser.add_argument('--labeled-adv-scale', type=float, default=-1, help='ssladv - adversarial constraint coefficient of labeled data')
+    parser.add_argument('--unlabeled-adv-scale', type=float, default=-1, help='ssladv - adversarial constraint coefficient of unlabeled data')
     
-    parser.add_argument('--discriminator-lr', type=float, default=1e-4, help='the initial learning rate of the FC discriminator')
-    parser.add_argument('--discriminator-power', type=float, default=0.9, help='power value of the PolynomialLR strategy used by the FC discriminator')
-    parser.add_argument('--unlabeled-for-discriminator', type=cmd.str2bool, default=False, help='train FC discriminator with unlabeled data if True')
-    parser.add_argument('--discriminator-scale', type=float, default=1.0, help='coefficient of the FC discriminator constraint')
+    parser.add_argument('--discriminator-lr', type=float, default=1e-4, help='ssladv - the initial learning rate of the FC discriminator')
+    parser.add_argument('--discriminator-power', type=float, default=0.9, help='ssladv - power value of the PolynomialLR strategy used by the FC discriminator')
+    parser.add_argument('--unlabeled-for-discriminator', type=cmd.str2bool, default=False, help='ssladv - train FC discriminator with unlabeled data if True')
+    parser.add_argument('--discriminator-scale', type=float, default=1.0, help='ssladv - coefficient of the FC discriminator constraint')
 
 
 def ssl_adv(args, model_dict, optimizer_dict, lrer_dict, criterion_dict, task_func):

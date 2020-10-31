@@ -219,6 +219,39 @@ class SemanticSegmentationFunc(pixelssl.func_template.TaskFunc):
             activated_ad_preds.append(F.softmax(ad_pred, dim=1))
         return activated_ad_preds
 
+    def sslcct_ad_in_channels(self):
+        arch = self.args.models['model']
+        
+        ad_in_channels = -1
+        if arch == 'pspnet':
+            ad_in_channels = 512
+        elif arch == 'deeplabv2':
+            ad_in_channels = 2048
+        else:
+            pixelssl.log_err(
+                'In the SSL_CCT algorithm, you try to use \'{0}\' as the task model of sseg task.\n'
+                'However, the function \'sslcct_ad_in_channels\' does not support this model.\n'
+                'Please add this model architecture to the above function in the file \'task/sseg/func.py\'\n'.format(arch))
+
+        return ad_in_channels
+
+    def sslcct_ad_out_channels(self):
+        return self.args.num_classes
+
+    def sslcct_ad_upsample_scale(self):
+        arch = self.args.models['model']
+        
+        upsample_scale = -1
+        if arch in ['pspnet', 'deeplabv2']:
+            upsample_scale = 8
+        else:
+            pixelssl.log_err(
+                'In the SSL_CCT algorithm, you try to use \'{0}\' as the task model of sseg task.\n'
+                'However, the function \'sslcct_ad_upsample_scale\' does not support this model.\n'
+                'Please add this model architecture to the above function in the file \'task/sseg/func.py\'\n'.format(arch))
+
+        return upsample_scale
+
     # ---------------------------------------------------------------------
 
 

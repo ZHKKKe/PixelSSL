@@ -12,11 +12,13 @@ The purpose of this project is to promote the research and application of semi-s
 
 As a result, the SSL algorithms integrated in PixelSSL are compatible with all task codes inherited from the given template. 
 
+In addition, PixelSSL provides the benchmarks for validating semi-supervised learning algorithms for some pixel-level tasks, which now include [semantic segmentation](task/sseg).
+
 <!-- This project includes the code of our ECCV 2020 paper [Guided Collaborative Training for Pixel-wise Semi-Supervised Learning](https://arxiv.org/abs/2008.05258) (GCT). -->
 
 ## News
 - **[Oct 28 2020] PixelSSL v0.1.2 is Released!**  
-  v0.1.2 supports [PSPNet](https://arxiv.org/abs/1612.01105) and its SSL results for semantic segmentation task [check [here](task/sseg)].
+  v0.1.2 supports [PSPNet](https://arxiv.org/abs/1612.01105) and its SSL results for semantic segmentation task (check [here](task/sseg)).
   
 - **[Sep 16 2020] PixelSSL v0.1.1 is Released!**  
   v0.1.1 supports a new semi-supervised learning algorihms ([S4L](https://arxiv.org/abs/1905.03670)) and fixes some bugs in the demo code of semantic segmentation task.
@@ -40,7 +42,8 @@ The SSL algorithms and demo tasks supported by PixelSSL are summarized in the fo
 | MT [[1]](https://arxiv.org/abs/1703.01780) | v0.1.0 | Coming Soon |
 | AdvSSL [[2]](https://arxiv.org/abs/1802.07934) | v0.1.0 | Coming Soon |
 | S4L [[3]](https://arxiv.org/abs/1905.03670) | v0.1.1 | Coming Soon | 
-| GCT [[4]](https://arxiv.org/abs/2008.05258) | v0.1.0 | Coming Soon |
+| CCT [[4]](https://arxiv.org/abs/2003.09005) | v0.1.3 | Coming Soon |
+| GCT [[5]](https://arxiv.org/abs/2008.05258) | v0.1.0 | Coming Soon |
 
 
 [1] Mean Teachers are Better Role Models: Weight-Averaged Consistency Targets Improve Semi-Supervised Deep Learning Results  
@@ -52,7 +55,10 @@ The SSL algorithms and demo tasks supported by PixelSSL are summarized in the fo
 [3] S4L: Self-Supervised Semi-Supervised Learning  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Xiaohua Zhai, Avital Oliver, Alexander Kolesnikov, and Lucas Beyer. ICCV 2019.  
 
-[4] Guided Collaborative Training for Pixel-wise Semi-Supervised Learning  
+[4] Semi-Supervised Semantic Segmentation with Cross-Consistency Training  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Yassine Ouali, Céline Hudelot, and Myriam Tami. CVPR 2020.
+
+[5] Guided Collaborative Training for Pixel-wise Semi-Supervised Learning  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zhanghan Ke, Di Qiu, Kaican Li, Qiong Yan, and Rynson W.H. Lau. ECCV 2020.
 
 

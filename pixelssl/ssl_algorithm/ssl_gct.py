@@ -19,9 +19,9 @@ from pixelssl.nn.module import patch_replication_callback, SynchronizedBatchNorm
 from . import ssl_base
 
 
-""" Implementation of the GCT algorithm for SSL
+""" Implementation of the GCT algorithm for pixel-wise SSL
 
-This method is proposed in paper:
+This method is proposed in the paper:
     'Guided Collaborative Training for Pixel-wise Semi-Supervised Learning'
 
 This is the official implementation of the above paper.
@@ -37,18 +37,18 @@ def add_parser_arguments(parser):
     ssl_base.add_parser_arguments(parser)
 
     parser.add_argument('--ssl-mode', type=str, default=MODE_GCT, choices=[MODE_GCT, MODE_DC, MODE_FC], 
-                        help='select semi-supervised constraints for training (gct = dc + fc)')
+                        help='sslgct - select semi-supervised constraints for training (gct = dc + fc)')
 
-    parser.add_argument('--fc-ssl-scale', type=float, default=-1.0, help='flaw correction constraint coefficient')
-    parser.add_argument('--dc-ssl-scale', type=float, default=-1.0, help='dynamic consistency constraint coefficient')
-    parser.add_argument('--dc-threshold', type=float, default=-1.0, help='threshold of dynamic consistency constraint')
-    parser.add_argument('--dc-rampup-epochs', type=int, default=-1, help='ramp-up epochs of dynamic consistency constraint')
+    parser.add_argument('--fc-ssl-scale', type=float, default=-1.0, help='sslgct - flaw correction constraint coefficient')
+    parser.add_argument('--dc-ssl-scale', type=float, default=-1.0, help='sslgct - dynamic consistency constraint coefficient')
+    parser.add_argument('--dc-threshold', type=float, default=-1.0, help='sslgct - threshold of dynamic consistency constraint')
+    parser.add_argument('--dc-rampup-epochs', type=int, default=-1, help='sslgct - ramp-up epochs of dynamic consistency constraint')
 
-    parser.add_argument('--fd-lr', type=float, default=1e-4, help='the initial learning rate of the flaw detector')
-    parser.add_argument('--fd-scale', type=float, default=1.0, help='coefficient of the flaw detector constraint')
+    parser.add_argument('--fd-lr', type=float, default=1e-4, help='sslgct - the initial learning rate of the flaw detector')
+    parser.add_argument('--fd-scale', type=float, default=1.0, help='sslgct - coefficient of the flaw detector constraint')
 
-    parser.add_argument('--mu', type=float, default=-1.0, help='channel average coefficient of the flaw detector\'s ground truth generator')
-    parser.add_argument('--nu', type=int, default=-1, help='operations repeat coefficient of the flaw detector\'s ground truth generator')
+    parser.add_argument('--mu', type=float, default=-1.0, help='sslgct - channel average coefficient of the flaw detector\'s ground truth generator')
+    parser.add_argument('--nu', type=int, default=-1, help='sslgct - operations repeat coefficient of the flaw detector\'s ground truth generator')
 
 
 def ssl_gct(args, model_dict, optimizer_dict, lrer_dict, criterion_dict, task_func):
