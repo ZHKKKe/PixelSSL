@@ -6,19 +6,24 @@
 
 ## Updates
 
+- **[Nov 06 2020] PixelSSL v0.1.3 is Released!**  
+  v0.1.3 supports the [CCT](https://arxiv.org/abs/2003.09005) semi-supervised learning algorithm for pixel-wise classification.
+
+<br>
+
 - **[Oct 28 2020] PixelSSL v0.1.2 is Released!**  
   v0.1.2 supports [PSPNet](https://arxiv.org/abs/1612.01105) and its SSL results for semantic segmentation task. 
   
-<br/>
+<br>
 
 - **[Sep 16 2020] PixelSSL v0.1.1 is Released!**  
-  v0.1.1 supports a new semi-supervised learning algorihms ([S4L](https://arxiv.org/abs/1905.03670)) and fixes some bugs in the demo code of semantic segmentation task.
+  v0.1.1 supports the [S4L](https://arxiv.org/abs/1905.03670) semi-supervised learning algorihm and fixes some bugs in the demo code of semantic segmentation task.
   
   Bug fix:  
     - Fixed the bug of the ASPP module in the DeepLabV2 model.
     - Fixed the bug of sharing `confusion_matrix` when calculating the semantic segmentation metric in multi-model SSL algorithm, e.g., MT, GCT.  
 
-<br/>
+<br>
 
 - **[Aug 13 2020] PixelSSL v0.1.0 is Released!**  
   v0.1.0 supports supervised-only learning, three semi-supervised learning algorithms 
