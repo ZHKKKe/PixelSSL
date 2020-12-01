@@ -42,7 +42,7 @@ def str2bool(v):
 
 
 def str2intlist(v):
-    v = v.replace('[', '').replace(']', '').split(',')
+    v = v.replace('[', '').replace(']', '').replace('(', '').replace(')', '').split(',')
     int_list = []
     for i in v:
         int_list.append(int(i.strip()))
@@ -51,7 +51,7 @@ def str2intlist(v):
 
 
 def str2floatlist(v):
-    v = v.replace('[', '').replace(']', '').split(',')
+    v = v.replace('[', '').replace(']', '').replace('(', '').replace(')', '').split(',')
     float_list = []
     for f in v:
         float_list.append(float(f.strip()))

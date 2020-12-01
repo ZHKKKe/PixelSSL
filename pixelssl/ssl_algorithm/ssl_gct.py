@@ -283,7 +283,7 @@ class SSLGCT(ssl_base._SSLBase):
                                 '  fd\t=>\t'
                                 'l-fd-loss: {meters[l_fd_loss]:.6f}\t'
                                 'r-fd-loss: {meters[r_fd_loss]:.6f}\n'
-                                .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
+                                .format(epoch + 1, idx, len(data_loader), self.args.task, meters=self.meters))
                 
             # the flaw detector uses polynomiallr [ITER_LRERS]
             self.fd_lrer.step()
@@ -347,7 +347,7 @@ class SSLGCT(ssl_base._SSLBase):
                                 '  fd\t=>\t'
                                 'l-fd-loss: {meters[l_fd_loss]:.6f}\t'
                                 'r-fd-loss: {meters[r_fd_loss]:.6f}\n'
-                                .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
+                                .format(epoch + 1, idx, len(data_loader), self.args.task, meters=self.meters))
                         
         # metrics
         metrics_info = {'l': '', 'r': ''}

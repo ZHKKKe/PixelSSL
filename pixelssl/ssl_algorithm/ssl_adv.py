@@ -256,7 +256,7 @@ class SSLADV(ssl_base._SSLBase):
                                 '  fc-discriminator\t=>\t'
                                 'fake-d-loss: {meters[fake_d_loss]:.6f}\t'
                                 'real-d-loss: {meters[real_d_loss]:.6f}\n'
-                                .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
+                                .format(epoch + 1, idx, len(data_loader), self.args.task, meters=self.meters))
                     
             # visualization
             if self.args.visualize and idx % self.args.visual_freq == 0:
@@ -335,7 +335,7 @@ class SSLADV(ssl_base._SSLBase):
                                 '  fc-discriminator\t=>\t'
                                 'fake-d-loss: {meters[fake_d_loss]:.6f}\t'
                                 'real-d-loss: {meters[real_d_loss]:.6f}\n'
-                                .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
+                                .format(epoch + 1, idx, len(data_loader), self.args.task, meters=self.meters))
 
             if self.args.visualize and idx % self.args.visual_freq == 0:
                 self._visualize(epoch, idx, False, 
@@ -423,7 +423,7 @@ class SSLADV(ssl_base._SSLBase):
         return inp, gt
 
     def _algorithm_warn(self):
-        logger.log_warn('This SSL_ADV algorithm reproducts the SSL algorithm from paper:\n'
+        logger.log_warn('This SSL_ADV algorithm reproduces the SSL algorithm from the paper:\n'
                         '  \'Adversarial Learning for Semi-supervised Semantic Segmentation\'\n'
                         'The main differences between this implementation and the original paper are:\n'
                         '  (1) This implementation does not support the constraint named \'L_semi\' in the\n'

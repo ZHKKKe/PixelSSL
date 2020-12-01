@@ -81,7 +81,7 @@ class SSLMT(ssl_base._SSLBase):
                                'or\n'
                                'You set argument - unlabeled_batch_size - larger than 0\n'
                                'Please set - cons_scale >= 0 - for training\n')
-            elif self.args.cons_rampup_epochs < 0:
+            if self.args.cons_rampup_epochs < 0:
                 logger.log_err('The argument - cons_rampup_epochs - is not set (or invalid)\n'
                                'You set argument - cons_for_labeled - to True\n'
                                'or\n'
@@ -204,7 +204,7 @@ class SSLMT(ssl_base._SSLBase):
                                 's-cons-loss: {meters[cons_loss]:.6f}\n'
                                 '  teacher-{3}\t=>\t'
                                 't-task-loss: {meters[t_task_loss]:.6f}\n'
-                                .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
+                                .format(epoch + 1, idx, len(data_loader), self.args.task, meters=self.meters))
 
             # visualization
             if self.args.visualize and idx % self.args.visual_freq == 0:
@@ -272,7 +272,7 @@ class SSLMT(ssl_base._SSLBase):
                                 's-cons-loss: {meters[cons_loss]:.6f}\n'
                                 '  teacher-{3}\t=>\t'
                                 't-task-loss: {meters[t_task_loss]:.6f}\n'
-                                .format(epoch, idx, len(data_loader), self.args.task, meters=self.meters))
+                                .format(epoch + 1, idx, len(data_loader), self.args.task, meters=self.meters))
 
             if self.args.visualize and idx % self.args.visual_freq == 0:
                 self._visualize(epoch, idx, False, 
@@ -363,7 +363,7 @@ class SSLMT(ssl_base._SSLBase):
             t_param.data.mul_(ema_decay).add_(1 - ema_decay, s_param.data)
 
     def _algorithm_warn(self):
-        logger.log_warn('This SSL_MT algorithm reproducts the SSL algorithm from paper:\n'
+        logger.log_warn('This SSL_MT algorithm reproduces the SSL algorithm from the paper:\n'
                         '  \'Mean Teachers are Better Role Models: Weight-Averaged Consistency Targets '
                         'Improve Semi-Supervised Deep Learning Results\'\n'
                         'The main differences between this implementation and the original paper are:\n'

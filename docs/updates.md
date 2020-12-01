@@ -6,6 +6,11 @@
 
 ## Updates
 
+- **[Dec 25 2020] PixelSSL v0.1.4 is Released!**  
+  v0.1.4 supports the [CutMix](https://arxiv.org/abs/1906.01916) semi-supervised learning algorithm for pixel-wise classification.
+
+<br>
+
 - **[Nov 06 2020] PixelSSL v0.1.3 is Released!**  
   v0.1.3 supports the [CCT](https://arxiv.org/abs/2003.09005) semi-supervised learning algorithm for pixel-wise classification.
 
