@@ -296,7 +296,7 @@ class SSLMT(ssl_base._SSLBase):
     def _save_checkpoint(self, epoch):
         state = {
             'algorithm': self.NAME,
-            'epoch': epoch + 1, 
+            'epoch': epoch, 
             's_model': self.s_model.state_dict(),
             't_model': self.t_model.state_dict(),
             's_optimizer': self.s_optimizer.state_dict(),

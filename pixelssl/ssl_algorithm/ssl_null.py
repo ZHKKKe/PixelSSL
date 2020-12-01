@@ -194,7 +194,7 @@ class SSLNULL(ssl_base._SSLBase):
     def _save_checkpoint(self, epoch):
         state = {
             'algorithm': self.NAME,
-            'epoch': epoch + 1,
+            'epoch': epoch,
             'model': self.model.state_dict(),
             'optimizer': self.optimizer.state_dict(),
             'lrer': self.lrer.state_dict(),

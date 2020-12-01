@@ -140,23 +140,24 @@ class TaskProxy:
                         
             logger.log_info(['=' * 78, '\nStart to validate model\n', '=' * 78])
             with torch.no_grad():
-                self.ssl_algorithm.validate(self.val_loader, start_epoch - 1)
+                self.ssl_algorithm.validate(self.val_loader, start_epoch)
             return
 
+        # NOTE: the first epoch index for 'train' and 'validatie' is 0
         for epoch in range(start_epoch, self.args.epochs):
             timer = time.time()
 
-            logger.log_info(['=' * 78, '\nStart to train epoch-{0}\n'.format(epoch), '=' * 78])
+            logger.log_info(['=' * 78, '\nStart to train epoch-{0}\n'.format(epoch + 1), '=' * 78])
             self.ssl_algorithm.train(self.train_loader, epoch)
 
-            if epoch % self.args.val_freq == 0 and self.val_loader is not None:
-                logger.log_info(['=' * 78, '\nStart to validate epoch-{0}\n'.format(epoch), '=' * 78])
+            if (epoch + 1) % self.args.val_freq == 0 and self.val_loader is not None:
+                logger.log_info(['=' * 78, '\nStart to validate epoch-{0}\n'.format(epoch + 1), '=' * 78])
                 with torch.no_grad():
                     self.ssl_algorithm.validate(self.val_loader, epoch)
 
             if (epoch + 1) % self.args.checkpoint_freq == 0:
                 self.ssl_algorithm.save_checkpoint(epoch + 1)
-                logger.log_info("Save checkpoint for epoch {0}".format(epoch))
+                logger.log_info("Save checkpoint for epoch {0}".format(epoch + 1))
         
             logger.log_info('Finish epoch in {0} seconds\n'.format(time.time() - timer))
         

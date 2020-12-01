@@ -363,7 +363,7 @@ class SSLGCT(ssl_base._SSLBase):
     def _save_checkpoint(self, epoch):
         state = {
             'algorithm': self.NAME,
-            'epoch': epoch + 1,
+            'epoch': epoch,
             'l_model': self.l_model.state_dict(),
             'r_model': self.r_model.state_dict(),
             'fd_model': self.fd_model.state_dict(),

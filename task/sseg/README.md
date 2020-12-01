@@ -17,11 +17,11 @@ The supported task model is [PSPNet]() with the [ResNet-101](https://arxiv.org/a
 
 | SSL/Labels | 1/16 labels | 1/8 labels | 1/4 labels | 1/2 labels | full labels | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| SupOnly | 61.90 | [67.06](https://drive.google.com/file/d/1CyrmM0AxMvYoY-YatmLFQf_j_Afi2bCS/view?usp=sharing) | 69.78 | 72.89 | [75.25](https://drive.google.com/file/d/1AGimIbPCT-Cv6ONx0WcrfCV9ONVKSZlt/view?usp=sharing) |
-| [MT](https://arxiv.org/abs/1703.01780) | 62.78 | [68.86](https://drive.google.com/file/d/1D30Ehvu3hzIoDCvbF9n0Wcba4QLe-MC-/view?usp=sharing) | - | - | - | 
-| [AdvSSL](https://arxiv.org/abs/1802.07934) | 63.04 | [68.39](https://drive.google.com/file/d/1GyneqnoT3QOFdNT4tvoILv2A24k9LQba/view?usp=sharing) | - | - | - |
-| [CCT](https://arxiv.org/abs/2003.09005) | 64.58 | [70.45](https://drive.google.com/file/d/1a7rTr5Azvchx0mgPbonRpqSIiGN-yCeL/view?usp=sharing) | - | - | - |  
-| [GCT](https://arxiv.org/abs/2008.05258) | 64.36 | [70.57]() | - | - | - |  
+| SupOnly | 61.90 | [67.06](https://drive.google.com/file/d/1J4dTeIh6K0vCaAU7iQVIzvJljhfkktP2/view?usp=sharing) | 69.78 | 72.89 | [75.25](https://drive.google.com/file/d/1GYtk-oPcKTUmSVcGIQmAqYIZpWmIOB8I/view?usp=sharing) |
+| [MT](https://arxiv.org/abs/1703.01780) | 62.78 | [68.86](https://drive.google.com/file/d/1XKPqRLE8O1N-mYIY7fn8g7F_s5D8CMck/view?usp=sharing) | 70.87 | - | - | 
+| [AdvSSL](https://arxiv.org/abs/1802.07934) | 63.04 | [68.39](https://drive.google.com/file/d/1cZYh-FZ1xkFc77YP5rnw1MX_Pu8gde1H/view?usp=sharing) | 70.75 | - | - |
+| [CCT](https://arxiv.org/abs/2003.09005) | 64.58 | [70.45](https://drive.google.com/file/d/1zDBvvGxeS_yhiH40vrIgfsxxmgBHFMi6/view?usp=sharing) | - | - | - |  
+| [GCT](https://arxiv.org/abs/2008.05258) | 64.36 | [70.57](https://drive.google.com/file/d/1QCl60uvG91JwkRKMsXjwR5QwDy67rkV_/view?usp=sharing) | - | - | - |  
 
 **NOTE**: 
 - For the SupOnly experiments, the training epochs under all settings is 80. For the SSL experiments, the training epochs of 1/16, 1/8, 1/4, 1/2 and full labels are 45, 45, 55, 80 and 80, respectively.
