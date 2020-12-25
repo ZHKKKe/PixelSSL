@@ -17,7 +17,7 @@ In addition, PixelSSL provides the benchmarks for validating semi-supervised lea
 
 ## News
 - **[Dec 25 2020] PixelSSL v0.1.4 is Released!**  
-  *Merry Christmas!* :christmas_tree:  
+  :christmas_tree: ***Merry Christmas!*** :christmas_tree:  
   v0.1.4 supports the [CutMix](https://arxiv.org/abs/1906.01916) semi-supervised learning algorithm for pixel-wise classification.
 
 - **[Nov 06 2020] PixelSSL v0.1.3 is Released!**  
