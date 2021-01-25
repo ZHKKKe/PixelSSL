@@ -21,8 +21,8 @@ The supported task model is [PSPNet]() with the [ResNet-101](https://arxiv.org/a
 | [MT](https://arxiv.org/abs/1703.01780) | 62.78 | [68.86](https://drive.google.com/file/d/1XKPqRLE8O1N-mYIY7fn8g7F_s5D8CMck/view?usp=sharing) | 70.87 | 73.24 | - | 
 | [AdvSSL](https://arxiv.org/abs/1802.07934) | 63.04 | [68.39](https://drive.google.com/file/d/1cZYh-FZ1xkFc77YP5rnw1MX_Pu8gde1H/view?usp=sharing) | 70.75 | 73.28 | - |
 | [CCT](https://arxiv.org/abs/2003.09005) | 64.58 | [70.45](https://drive.google.com/file/d/1zDBvvGxeS_yhiH40vrIgfsxxmgBHFMi6/view?usp=sharing) | 71.17 | 73.59 | - |  
-| [GCT](https://arxiv.org/abs/2008.05258) | 64.36 | [70.69](https://drive.google.com/file/d/1pTFbuUDLxenIuTmjiqpVgk7wqqCqErZ9/view?usp=sharing) | 72.84 | - | - |  
-| [CutMix](https://arxiv.org/abs/1906.01916) | 69.21 | [70.82](https://drive.google.com/file/d/1XjywNZ1DA-Fpnr_V96PDiOXhRFPjWweJ/view?usp=sharing) | 71.69 | - | - |  
+| [GCT](https://arxiv.org/abs/2008.05258) | 64.36 | [70.69](https://drive.google.com/file/d/1pTFbuUDLxenIuTmjiqpVgk7wqqCqErZ9/view?usp=sharing) | **72.84** | **73.97** | - |  
+| [CutMix](https://arxiv.org/abs/1906.01916) | **69.21** | **[70.82](https://drive.google.com/file/d/1XjywNZ1DA-Fpnr_V96PDiOXhRFPjWweJ/view?usp=sharing)** | 71.69 | 73.86 | - |  
 
 **NOTE**: 
 - For the SupOnly experiments, the training epochs under all settings is 80. For the SSL experiments, the training epochs of 1/16, 1/8, 1/4, 1/2 and full labels are 45, 45, 55, 80 and 80, respectively.
@@ -36,8 +36,8 @@ The supported task model is [DeepLab-v2](https://arxiv.org/abs/1606.00915) with 
 | SupOnly | 61.24 | [65.60](https://drive.google.com/file/d/1F73YYPJCV-4Lru_74npYXOE2ZxoG9CYO/view?usp=sharing) | 67.87 | 71.96 | [73.63](https://drive.google.com/file/d/1QRXLzpYPh5DgR86xSLniPPv0vjJV6noT/view?usp=sharing) |
 | [MT](https://arxiv.org/abs/1703.01780) | 63.11 | [67.65](https://drive.google.com/file/d/1AbVrldtzH8VvigC-R12rSwup_RWPGDPD/view?usp=sharing) | 69.27 | 72.04 | 73.59 | 
 | [S4L](https://arxiv.org/abs/1905.03670) | 61.75 | [67.15](https://drive.google.com/file/d/1WTElznEp5z8M_Vn647PkjKizU98VcksC/view?usp=sharing) | 68.42 | 71.98 | 73.66 |
-| [AdvSSL](https://arxiv.org/abs/1802.07934) | 62.61 | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 69.94 | 72.10 | 74.15 |
-| [GCT](https://arxiv.org/abs/2008.05258) | 65.18 | [70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing) | 71.53 | 72.45 | 74.06 |  
+| [AdvSSL](https://arxiv.org/abs/1802.07934) | 62.61 | [68.43](https://drive.google.com/file/d/1PtXWU7wWxs_nbC0isnBuKTzMN7EUHJXQ/view?usp=sharing) | 69.94 | 72.10 | **74.15** |
+| [GCT](https://arxiv.org/abs/2008.05258) | **65.18** | **[70.57](https://drive.google.com/file/d/1XaEk3kGAPHdCdDM2XFL-psgrd0HL_vwf/view?usp=sharing)** | **71.53** | **72.45** | 74.06 |  
 
 **NOTE**: 
 - The mIoU in the above table are lower than the results reported in the [GCT](https://arxiv.org/abs/2008.05258) paper. The higher mIoU in the paper comes from a `CenterCrop` operation that shouldn't have during the validation. The bug has been fixed in [this commit](https://github.com/ZHKKKe/PixelSSL/commit/b655e514ec2917adf3210a5c4f1e362b8d446f51). Since all models' performance is almost equally degraded, this bug does not affect the conclusions about semi-supervised learning.
