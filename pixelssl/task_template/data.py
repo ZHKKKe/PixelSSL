@@ -62,10 +62,6 @@ class TaskDataset(Dataset):
 
         self.im_loader = ImageLoader()  # image loader based on PIL.Image
 
-        if self.args is not None:
-            assert len(self.args.trainset) <= 1
-            assert len(self.args.valset) <= 1
-        
         if is_train:
             self.root_dir = list(self.args.trainset.values())[0]
         else:
